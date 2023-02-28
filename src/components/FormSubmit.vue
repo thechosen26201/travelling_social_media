@@ -1,26 +1,92 @@
 <template>
     <!-- <slot></slot> -->
-    <SignInForm v-if="this.isSignIn">
+    <ChildForm v-if="this.isSignIn">
         <input type="text" class="form-input form-control" placeholder="Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
         <input type="password" class="form-input form-control" placeholder="Mật khẩu" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
         <button class="sign-in-btn form-btn btn btn-primary">Đăng nhập</button>
         <a href="" class="link-forgot-password mb-2">Quên mật khẩu?</a>
         <button class="sign-up-btn form-btn btn btn-success" @click="openSignUpForm">Đăng ký</button>
-    </SignInForm>
+    </ChildForm>
 
-    <SignInForm v-else>
+    <ChildForm v-else>
         <input type="text" class="form-input form-control" placeholder="Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
         <input type="password" class="form-input form-control" placeholder="Mật khẩu" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
         <button class="sign-up-btn form-btn btn btn-success">Đăng ký</button>
-    </SignInForm>
+    </ChildForm>
 </template>
+<style scoped lang="scss">
+    .container-fluid {
+        background-color: #f0f2f5;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .logo {
+        background: url('../temp/css/assets/images/user_img/logo3.png') left / contain no-repeat;
+        height: 4rem;
+        margin-bottom: 1rem;
+    }
+    .right-side {
+        border-radius: 2%;
+        background-color: #fff;
+        box-shadow: 0 0 1.6em #ccc;
+    }
+    .sign-in-form {
+        padding: 1rem;
+    }
+    .right-side {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    input.form-input {
+        /* border: none; */
+        outline: none;
+        &:focus {
+            box-shadow: none;
+        }
+    }
+    input.form-input, .form-btn {
+        margin-bottom: 1rem;
+    } 
+    button {
+        font-weight: bold;
+        padding: 0.5rem;
+    }
+    a.link-forgot-password {
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    /**Responsive */
+    @media (max-width: 576px) {
+        .right-side {
+            // margin-top: 1rem;
+            // max-width: none;
+            // padding: 1rem;
+            margin: 1rem auto;
+        }
+    }
 
+    @media (min-width: 576px) and (max-width: 768px){
+        .right-side {
+            margin: 1rem auto;
+        }
+        .logo {
+            background-position-x: center;
+        }
+        .title {
+            text-align: center;
+        }
+    }
+</style>
 <script>
-import SignInForm from './SignInForm.vue';
+import ChildForm from './ChildForm.vue';
 
 export default {
     name: "FormSubmit",
-    components: { SignInForm },
+    components: { ChildForm },
     data() {
         return {
             isSignIn: true

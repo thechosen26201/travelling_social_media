@@ -15,7 +15,7 @@
         </div>
     </div>
 </template>
-<style lang="scss">
+<style scoped lang="scss">
     .container-fluid {
         background-color: #f0f2f5;
         height: 100vh;

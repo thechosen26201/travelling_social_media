@@ -1,0 +1,22 @@
+/* width */
+::-webkit-scrollbar {
+    height: 8px;              /* height of horizontal scrollbar ← You're missing this */
+    width: 8px;               /* width of vertical scrollbar */
+    border: 1px solid #d5d5d5;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

@@ -1,0 +1,30 @@
+@use '../../abstracts/' as ab;
+
+
+.navigation {
+    background-color: ab.$dark-color;
+    opacity: 0.6;
+    &__header {
+        color: ab.$base-color;
+    }
+    &__list {
+        padding: 0;
+    }
+    &__list-item {
+        @include ab.listStyle;
+        padding: 15px;
+        &:hover {
+            @include ab.buttonHover;
+            color: ab.$dark-color;
+        }
+        & i {
+            margin-right: 10px;
+            min-width: 16px;
+            min-height: 16px;
+        }
+        &.selected {
+            background-color: ab.$success-color;
+            pointer-events: none;
+        }
+    }
+}

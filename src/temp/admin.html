@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Travel Destination</title>
+	<link rel="stylesheet" href="./css/admin.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+		integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body style="background-color: #eee;">
+	<div class="wrapper">
+		<div class="navigation">
+			<div class="navigation__header">Traveling</div>
+			<ul class="navigation__list">
+				<li class="navigation__list-item">
+					<i class="fa-solid fa-circle-user"></i>
+					User
+				</li>
+				<li class="navigation__list-item selected">
+					<i class="fa-solid fa-blog"></i>
+					Pending blog
+				</li>
+				<li class="navigation__list-item">
+					<i class="fa-solid fa-user"></i>
+					User Accounts
+				</li>
+			</ul>
+		</div>
+		<div class="main">
+			<div class="main__header">
+				<div class="main__header--left">
+					Header Name
+				</div>
+				<div class="main__header--right">
+					<div class="main__header-search">
+						<input type="text" name="" class="search" placeholder="Search">
+						<div class="search__menu">
+
+						</div>
+					</div>
+					<div class="main__header-bell icon">
+						<i class="fa-solid fa-bell"></i>
+					</div>
+					<div class="main__header-user icon">
+						<i class="fa-solid fa-circle-user"></i>
+					</div>
+				</div>
+			</div>
+			<div class="main__content">
+				<div class="main__content-table">
+					<table>
+						<thead>
+							<tr>
+								<th>Blog ID</th>
+								<th>User ID</th>
+								<th>Username</th>
+								<th>Description</th>
+								<th>Created Date</th>
+								<th>Accept</th>
+								<th>Deny</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>#001</td>
+								<td>1</td>
+								<td>khanhnguyen</td>
+								<td class="table__description">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+									Nulla saepe perferendis nemo amet sit rem perspiciatis cum, rerum numquam laboriosam
+									ipsum a aliquid sequi nostrum labore ab! Obcaecati, vel accusamus!</td>
+								<td class="date">06/02/23</td>
+								<td>
+									<button class="button--accept">Accept</button>
+								</td>
+								<td>
+									<button class="button--deny">Deny</button>
+								</td>
+							</tr>
+							<tr>
+								<td>#001</td>
+								<td>2</td>
+								<td>khanhnguyen</td>
+								<td class="table__description">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+									Nulla saepe perferendis nemo amet sit rem perspiciatis cum, rerum numquam laboriosam
+									ipsum a aliquid sequi nostrum labore ab! Obcaecati, vel accusamus!</td>
+								<td></td>
+								<td>
+									<button class="button--accept">Accept</button>
+								</td>
+								<td>
+									<button class="button--deny">Deny</button>
+								</td>
+							</tr>
+							<tr>
+								<td>#001</td>
+								<td>3</td>
+								<td>khanhnguyen</td>
+								<td class="table__description">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+									Nulla saepe perferendis nemo amet sit rem perspiciatis cum, rerum numquam laboriosam
+									ipsum a aliquid sequi nostrum labore ab! Obcaecati, vel accusamus!</td>
+								<td></td>
+								<td>
+									<button class="button--accept">Accept</button>
+								</td>
+								<td>
+									<button class="button--deny">Deny</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="modal">
+				<div class="sub-blog">
+					<div class="sub-blog__title flex">
+						<div></div>
+						<div class="title">Bài viết của khanhnguyen</div>
+						<div class="sub-blog__icon--exit">
+							<i class="fa-solid fa-xmark xmark-icon"></i>
+						</div>
+					</div>
+					<div class="sub-blog__header flex">
+						<div class="sub-blog__header--left flex">
+							<div class="sub-blog__header-avatar"></div>
+
+							<div class="sub-blog__header-info">
+								<div class="sub-blog__header-username">Khánh Nguyễn</div>
+								<div class="sub-blog__header-created-date">1 giờ trước</div>
+							</div>
+						</div>
+
+						<div class="sub-blog__header--right flex">
+							<div class="sub-blog__icon--option">
+								<i class="fa-solid fa-ellipsis"></i>
+							</div>
+						</div>
+					</div>
+					<div class="sub-blog__post">
+						<!-- <div class="sub-blog__post-slider flex"> -->
+						<div class="sub-blog__post-slider">
+							<!-- <div class="button__previous button__slider">
+								<i class="fa-solid fa-angle-left arrow-left"></i>
+							</div>
+							<div class="slider-image flex">
+								<img src="./css/assets/images/places/newyork.jpg" alt="" class="slider-image-item">								
+							</div>
+							<div class="button__next button__slider">
+								<i class="fa-solid fa-angle-right arrow-right"></i>
+							</div> -->
+							<div class="mySlides">
+								<div class="numbertext">1 / 6</div>
+								<img src="./css/assets/images/places/newyork.jpg" style="width:100%">
+							</div>
+
+							<div class="mySlides">
+								<div class="numbertext">2 / 6</div>
+								<img src="./css/assets/images/places/sanfran.jpg" style="width:100%">
+							</div>
+
+							
+
+							<a class="prev" onclick="plusSlides(-1)">❮</a>
+							<a class="next" onclick="plusSlides(1)">❯</a>
+							
+							<div class="row">
+								<div class="column">
+									<img class="demo cursor" src="./css/assets/images/places/sanfran.jpg" style="width:100%"
+										onclick="currentSlide(1)" alt="The Woods">
+								</div>
+								<div class="column">
+									<img class="demo cursor" src="./css/assets/images/places/sanfran.jpg" style="width:100%"
+										onclick="currentSlide(2)" alt="Cinque Terre">
+								</div>
+								<div class="column">
+									<img class="demo cursor" src="./css/assets/images/places/sanfran.jpg" style="width:100%"
+										onclick="currentSlide(3)" alt="Cinque Terre">
+								</div>
+								<div class="column">
+									<img class="demo cursor" src="./css/assets/images/places/sanfran.jpg" style="width:100%"
+										onclick="currentSlide(4)" alt="Cinque Terre">
+								</div>
+								<div class="column">
+									<img class="demo cursor" src="./css/assets/images/places/sanfran.jpg" style="width:100%"
+										onclick="currentSlide(5)" alt="Cinque Terre">
+								</div>
+								<div class="column">
+									<img class="demo cursor" src="./css/assets/images/places/sanfran.jpg" style="width:100%"
+										onclick="currentSlide(6)" alt="Cinque Terre">
+								</div>
+								<div class="column">
+									<img class="demo cursor" src="./css/assets/images/places/sanfran.jpg" style="width:100%"
+										onclick="currentSlide(7)" alt="Cinque Terre">
+								</div>
+								<div class="column">
+									<img class="demo cursor" src="./css/assets/images/places/sanfran.jpg" style="width:100%"
+										onclick="currentSlide(8)" alt="Cinque Terre">
+								</div>
+								<div class="column">
+									<img class="demo cursor" src="./css/assets/images/places/sanfran.jpg" style="width:100%"
+										onclick="currentSlide(9)" alt="Cinque Terre">
+								</div>
+								<div class="column">
+									<img class="demo cursor" src="./css/assets/images/places/sanfran.jpg" style="width:100%"
+										onclick="currentSlide(10)" alt="Cinque Terre">
+								</div>
+								<div class="column">
+									<img class="demo cursor" src="./css/assets/images/places/sanfran.jpg" style="width:100%"
+										onclick="currentSlide(11)" alt="Cinque Terre">
+								</div>
+								<div class="column">
+									<img class="demo cursor" src="./css/assets/images/places/sanfran.jpg" style="width:100%"
+										onclick="currentSlide(12)" alt="Cinque Terre">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="sub-blog__reaction flex">
+						<div class="sub-blog__reaction--left flex">
+							<div class="sub-blog-reaction-icon flex">
+								<div class="like"></div>
+								<div class="love"></div>
+							</div>
+							<div class="reaction__quantity">12K</div>
+						</div>
+						<div class="sub-blog__reaction--right flex">
+							<div class="comment__quantity">30 comments</div>
+							<div class="shares__quantity">10 shares</div>
+						</div>
+					</div>
+					<div class="sub-blog__features flex">
+						<div class="sub-blog__features-thumbs-up feature">
+							<div>
+								<i class="fa-regular fa-thumbs-up"></i>
+								Like
+							</div>
+						</div>
+						<div class="sub-blog__features-comments feature">
+							<div>
+								<i class="fa-regular fa-comment"></i>
+								Comment
+							</div>
+						</div>
+						<div class="sub-blog__features-share feature">
+							<div>
+								<i class="fa-solid fa-share"></i>
+								Share
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script>
+	let slideIndex = 1;
+	showSlides(slideIndex);
+	
+	function plusSlides(n) {
+	  showSlides(slideIndex += n);
+	}
+	
+	function currentSlide(n) {
+	  showSlides(slideIndex = n);
+	}
+	
+	function showSlides(n) {
+	  let i;
+	  let slides = document.getElementsByClassName("mySlides");
+	  let dots = document.getElementsByClassName("demo");
+	  let captionText = document.getElementById("caption");
+	  if (n > slides.length) {slideIndex = 1}
+	  if (n < 1) {slideIndex = slides.length}
+	  for (i = 0; i < slides.length; i++) {
+		slides[i].style.display = "none";
+	  }
+	  for (i = 0; i < dots.length; i++) {
+		dots[i].className = dots[i].className.replace(" active", "");
+	  }
+	  slides[slideIndex-1].style.display = "block";
+	  dots[slideIndex-1].className += " active";
+	//   captionText.innerHTML = dots[slideIndex-1].alt;
+	}
+	</script>
+</html>

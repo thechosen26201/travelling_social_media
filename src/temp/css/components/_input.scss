@@ -1,0 +1,7 @@
+@use '../abstracts/' as ab;
+
+input {
+    &:focus {
+        outline: none;
+    }
+}

@@ -1,0 +1,12 @@
+@use '../abstracts/' as ab;
+
+.sub-blog-reaction-icon {
+    .like {
+        @include ab.icon_reaction('like');
+        background-size: contain;
+    }
+    .love {
+        @include ab.icon_reaction('love');
+        background-size: contain;
+    }
+}

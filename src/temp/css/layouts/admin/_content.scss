@@ -1,0 +1,33 @@
+@use '../../abstracts/' as ab;
+.main {
+    display: grid;
+    grid-template-rows: 50px calc(100vh - 50px);
+    grid-template-columns: 100%;
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 15px;
+        &--left, &--right {
+            display: flex;
+            align-items: center;
+        }
+        &--right > * {
+            padding: 10px 15px;
+        }
+        &-search .search {
+            padding: 5px;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            background-color: #eee
+        }
+
+        .icon {
+            @include ab.hover
+        }
+    }
+
+    &__content {
+        padding: 30px 15px;
+    }
+}
+

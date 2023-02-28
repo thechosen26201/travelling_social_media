@@ -1,0 +1,8 @@
+@use './pages/users/home';
+@use './layouts/admin/subBlog';
+@use './layouts/admin/test';
+@use './base/responsive';
+
+* {
+    font-family: 'Poppins', sans-serif;
+}

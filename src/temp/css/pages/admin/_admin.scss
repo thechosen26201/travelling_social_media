@@ -1,0 +1,13 @@
+/*Layouts*/
+@use '../../layouts/admin/wrapper';
+@use '../../layouts/admin/navigation';
+@use '../../layouts/admin/content';
+@use '../../layouts/admin/subBlog';
+@use '../../layouts/admin/test';
+
+/*Components*/
+@use '../../components/scrollbar';
+@use '../../components/table';
+@use '../../components/button';
+@use '../../components/input';
+@use '../../components/icon';

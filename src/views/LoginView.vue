@@ -3,7 +3,7 @@
         <div class="row">
             <div class="left-side col-12 col-lg-6">
                 <div class="logo">
-                    <!-- <img src="../temp/css/assets/images/user_img/logo.png" alt="Social book"> -->
+                    <!-- <img src="../temp/css/assets/images/user_img/logo3.png" alt="Social book"> -->
                 </div>
                 <div class="title">
                     Nơi tìm hiểu và chia sẻ những vị trí, trải nghiệm với những địa điểm du lịch
@@ -18,7 +18,6 @@
 <style scoped lang="scss">
     .container-fluid {
         background-color: #f0f2f5;
-        height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -27,6 +26,14 @@
         background: url('../temp/css/assets/images/user_img/logo3.png') left / contain no-repeat;
         height: 4rem;
         margin-bottom: 1rem;
+    }
+    .left-side {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        & img {
+            max-width: 100%;
+        }
     }
     .right-side {
         border-radius: 2%;
@@ -63,9 +70,6 @@
     /**Responsive */
     @media (max-width: 576px) {
         .right-side {
-            // margin-top: 1rem;
-            // max-width: none;
-            // padding: 1rem;
             margin: 1rem auto;
         }
     }
@@ -79,6 +83,11 @@
         }
         .title {
             text-align: center;
+        }
+    }
+    @media (min-width: 1200px) {
+        .container-fluid {
+            height: 100vh;
         }
     }
 </style>

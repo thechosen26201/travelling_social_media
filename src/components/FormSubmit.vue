@@ -9,9 +9,14 @@
     </ChildForm>
 
     <ChildForm v-else>
+        <input type="text" class="form-input form-control" placeholder="Họ" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        <input type="text" class="form-input form-control" placeholder="Tên" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
         <input type="text" class="form-input form-control" placeholder="Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
         <input type="password" class="form-input form-control" placeholder="Mật khẩu" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        <input type="password" class="form-input form-control" placeholder="Nhập lại mật khẩu" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        <input type="date" class="form-input form-control" name="" id="">
         <button class="sign-up-btn form-btn btn btn-success">Đăng ký</button>
+        <button class="sign-in-btn form-btn btn btn-primary" @click="openSignUpForm">Đã có tài khoản? Đăng nhập ngay</button>
     </ChildForm>
 </template>
 <style scoped lang="scss">
@@ -22,11 +27,11 @@
         align-items: center;
         justify-content: center;
     }
-    .logo {
-        background: url('../temp/css/assets/images/user_img/logo3.png') left / contain no-repeat;
-        height: 4rem;
-        margin-bottom: 1rem;
-    }
+    // .logo {
+    //     background: url('../temp/css/assets/images/user_img/logo3.png') left / contain no-repeat;
+    //     height: 4rem;
+    //     margin-bottom: 1rem;
+    // }
     .right-side {
         border-radius: 2%;
         background-color: #fff;
@@ -62,9 +67,6 @@
     /**Responsive */
     @media (max-width: 576px) {
         .right-side {
-            // margin-top: 1rem;
-            // max-width: none;
-            // padding: 1rem;
             margin: 1rem auto;
         }
     }

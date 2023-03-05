@@ -18,11 +18,12 @@ export default {
         let type = props.type,
             placeholder = props.placeholder,
             input = ref("");
-        const { validateFirstNameField, validateEmailField, errors } = useFormValidation();
+        const { validateFirstNameField, validateEmailField, validatePasswordField, errors } = useFormValidation();
         const validateInput = () => {
             // Gọi tới hàm validateNameField để check lỗi
             validateFirstNameField(props.placeholder, input.value);
             validateEmailField(props.placeholder, input.value);
+            validatePasswordField(props.placeholder, input.value);
         };
         return {type, placeholder, input, errors, validateInput };
     }

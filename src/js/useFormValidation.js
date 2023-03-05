@@ -4,7 +4,7 @@ import useValidators from './validators';
 const errors = reactive({});
 
 export default function useFormValidation() {
-    const {isEmpty, isEmail} = useValidators();
+    const {isEmpty, isEmail, isPassword} = useValidators();
 
     const validateFirstNameField = (fieldName, fieldValue) => {
         errors[fieldName] = isEmpty(fieldName, fieldValue);
@@ -15,5 +15,10 @@ export default function useFormValidation() {
             errors[fieldName] = !fieldValue ? isEmpty(fieldName, fieldValue) : isEmail(fieldName, fieldValue)
         } 
     }
-    return { errors, validateFirstNameField, validateEmailField}
+    const validatePasswordField = (fieldName, fieldValue) => {
+        if (fieldName === 'Mật khẩu') {
+            errors[fieldName] = !fieldValue ? isEmpty(fieldName, fieldValue) : isPassword(fieldName, fieldValue)
+        } 
+    }
+    return { errors, validateFirstNameField, validateEmailField, validatePasswordField}
 }

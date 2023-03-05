@@ -8,6 +8,9 @@
                 <li><img src="../temp/css/assets/images/user_img/video.png"></li>
             </ul>
         </div>
+        <div class="search-box--mobile" @click="toggleSearchMobile">
+            <img src="../temp/css/assets/images/user_img/search.png" alt="">
+        </div>
         <div class="nav-right">
             <div class="search-box">
                 <img src="../temp/css/assets/images/user_img/search.png" alt="">
@@ -18,9 +21,9 @@
             </div>
         </div>
         <!-- Mobile only -->
-        <div class="search-box--mobile" @click="toggleSearchMobile">
+        <!-- <div class="search-box--mobile" @click="toggleSearchMobile">
             <img src="../temp/css/assets/images/user_img/search.png" alt="">
-        </div>
+        </div> -->
         <div class="collapse__button" @click="toggleSubNavMobile">
             <font-awesome-icon icon="fa-solid fa-bars" />
         </div>
@@ -31,7 +34,7 @@
                 <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
                 Xem thông tin cá nhân
             </div>
-            <ul class="navlogo--mobile list-">
+            <ul class="navlogo--mobile">
                 <li><font-awesome-icon icon="fa-solid fa-bell" />Thông báo</li>
                 <li><font-awesome-icon icon="fa-solid fa-message" />Tin nhắn</li>
                 <li><font-awesome-icon icon="fa-solid fa-tv" />Xem video</li>
@@ -43,7 +46,7 @@
                     <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
                     <div>
                         <p> Alex Carry</p>
-                        <a href="#">See your profile</a>
+                        <RouterLink :to="{name: 'UserProfile', params: {id: this.test_object.id}}">See your profile</RouterLink>
                     </div>
                 </div>
                 <div id="dark-button" onclick="darkModeON()">
@@ -345,7 +348,7 @@
             </div>
             <button type="button" class="btn-LoadMore" onclick="LoadMoreToggle()">Load More</button>
         </div>
-
+        
         <!-- sidebar------------ -->
         <div class="right-sidebar">
             <div class="heading-link">
@@ -443,14 +446,22 @@
     import 'bootstrap/dist/css/bootstrap.css';
     import 'bootstrap/dist/js/bootstrap.bundle.js';
     import '@fortawesome/vue-fontawesome';
-
+    import { RouterLink} from 'vue-router';
+    
     export default {
         name: 'UserPage',
         data() {
             return {
                 isShowMobileSearch: false,
                 isShowMobileSubNav: false,
-                isShowUserSettings: false
+                isShowUserSettings: false,
+                test_object: {
+                    id: 1,
+                    name: 'khanh',
+                    email: 'khanh@gmail.com',
+                    phone: '0385182287',
+                    address: 'HaNoi'
+                }
             }
         },
         methods: {

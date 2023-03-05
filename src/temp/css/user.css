@@ -1047,6 +1047,9 @@ img {
   }
 }
 @media (min-width: 576px) and (max-width: 768px) {
+  .sub-nav {
+    display: none;
+  }
   .story img {
     width: 2em;
   }
@@ -1094,6 +1097,9 @@ img {
 }
 /*medium Tablet*/
 @media (min-width: 768px) and (max-width: 992px) {
+  .sub-nav {
+    display: none;
+  }
   .story img {
     width: 2em;
   }

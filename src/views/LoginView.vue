@@ -5,8 +5,9 @@
                 <div class="logo">
                     <!-- <img src="../temp/css/assets/images/user_img/logo3.png" alt="Social book"> -->
                 </div>
+                <h1>{{ firstName }}</h1>
                 <div class="title">
-                    Nơi tìm hiểu và chia sẻ những vị trí, trải nghiệm với những địa điểm du lịch
+                    Nơi tìm hiểu và chia sẻ những vị trí, trải nghiệm với những địa điểm du lịch                   
                 </div>
             </div>
             <form class="right-side col-12 col-lg-6">
@@ -20,6 +21,7 @@
         background-color: #f0f2f5;
         display: flex;
         align-items: center;
+        height: 100vh;
         justify-content: center;
     }
     .logo {
@@ -95,6 +97,7 @@
     import 'bootstrap/dist/css/bootstrap.css';
     import 'bootstrap/dist/js/bootstrap.bundle.js';
     import '@fortawesome/vue-fontawesome';
+    import {mapState} from 'vuex';
     // import {FormSubmit} from '../components/test.js';
     import FormSubmit from '../components/FormSubmit.vue';
 
@@ -105,8 +108,33 @@
         },
         data() {
             return {
-               
+                
             }
         },
+        
+        computed: {
+            // mapState({
+            // // arrow functions can make the code very succinct!
+            // firstName: state => state.name,
+            // })
+            
+            // ...mapState({
+            //     firstName: (state) => console.log(state.name),
+            // }),
+
+            // firstName() {
+            //     return store.state.name;
+            // },
+
+            // ...mapState(['name']),
+            // firstName() {
+            //     return this.name;
+            // },
+
+            ...mapState('auth', {
+                firstName: (state) => state.name,
+            }),
+            
+        }
     }
 </script>

@@ -9,12 +9,12 @@
     </ChildForm>
 
     <ChildForm v-else>
-        <input type="text" class="form-input form-control" placeholder="Họ" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-        <input type="text" class="form-input form-control" placeholder="Tên" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-        <input type="text" class="form-input form-control" placeholder="Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-        <input type="password" class="form-input form-control" placeholder="Mật khẩu" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-        <input type="password" class="form-input form-control" placeholder="Nhập lại mật khẩu" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-        <input type="date" class="form-input form-control" name="" id="">
+        <InputBase :type="'text'" :placeholder="'Họ'" :postFix="'@gmail.com'"/>
+        <InputBase :type="'text'" :placeholder="'Tên'"/>
+        <InputBase :type="'text'" :placeholder="'Email'"/>
+        <InputBase :type="'text'" :placeholder="'Mật khẩu'"/>
+        <InputBase :type="'text'" :placeholder="'Nhập lại mật khẩu'"/>
+        <InputBase :type="'date'" :placeholder="'Ngày sinh'"/>
         <button class="sign-up-btn form-btn btn btn-success">Đăng ký</button>
         <button class="sign-in-btn form-btn btn btn-primary" @click="openSignUpForm">Đã có tài khoản? Đăng nhập ngay</button>
     </ChildForm>
@@ -85,10 +85,11 @@
 </style>
 <script>
 import ChildForm from './ChildForm.vue';
+import InputBase from './InputBase.vue';
 
 export default {
     name: "FormSubmit",
-    components: { ChildForm },
+    components: { ChildForm, InputBase },
     data() {
         return {
             isSignIn: true

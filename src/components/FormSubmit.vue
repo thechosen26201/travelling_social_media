@@ -3,19 +3,23 @@
     <ChildForm v-if="this.isSignIn">
         <input type="text" class="form-input form-control" placeholder="Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
         <input type="password" class="form-input form-control" placeholder="Mật khẩu" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-        <button class="sign-in-btn form-btn btn btn-primary">Đăng nhập</button>
+        <button type="button" class="sign-in-btn form-btn btn btn-primary">Đăng nhập</button>
         <a href="" class="link-forgot-password mb-2">Quên mật khẩu?</a>
-        <button class="sign-up-btn form-btn btn btn-success" @click="openSignUpForm">Đăng ký</button>
+        <button type="button" class="sign-up-btn form-btn btn btn-success" @click="openSignUpForm">Đăng ký</button>
     </ChildForm>
 
     <ChildForm v-else>
-        <InputBase :type="'text'" :placeholder="'Họ'" :postFix="'@gmail.com'"/>
-        <InputBase :type="'text'" :placeholder="'Tên'"/>
+        <div class="container">
+            <div class="row">
+                <div class="col-6 p-0"><InputBase :type="'text'" :placeholder="'Họ'"/></div>
+                <div class="col-6 ps-1 pe-0"><InputBase :type="'text'" :placeholder="'Tên'"/></div>
+            </div>
+        </div>
         <InputBase :type="'text'" :placeholder="'Email'"/>
-        <InputBase :type="'text'" :placeholder="'Mật khẩu'"/>
+        <InputBase :type="'password'" :placeholder="'Mật khẩu'"/>
         <InputBase :type="'text'" :placeholder="'Nhập lại mật khẩu'"/>
         <InputBase :type="'date'" :placeholder="'Ngày sinh'"/>
-        <button class="sign-up-btn form-btn btn btn-success">Đăng ký</button>
+        <button type="button" class="sign-up-btn form-btn btn btn-success">Đăng ký</button>
         <button class="sign-in-btn form-btn btn btn-primary" @click="openSignUpForm">Đã có tài khoản? Đăng nhập ngay</button>
     </ChildForm>
 </template>

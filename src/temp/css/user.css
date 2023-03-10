@@ -764,7 +764,6 @@ ul.navlogo {
   left: 0;
   right: 0;
   background-color: rgba(204, 204, 204, 0.5);
-  display: none;
 }
 
 .sub-blog {
@@ -776,7 +775,11 @@ ul.navlogo {
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 0 15px 15px;
+  transition: mask-position 0.3s, -webkit-mask-position 0.3s;
+}
+.sub-blog .scrollable {
   overflow-y: auto;
+  max-height: 40rem;
 }
 .sub-blog__title {
   justify-content: space-between;

@@ -3,6 +3,8 @@
     display: grid;
     grid-template-rows: 100vh;
     grid-template-columns: 260px calc(100% - 260px);    
+    background-color: #eee;
+    // transition: ease-in-out 0.5s;
 }
 
 *.flex {

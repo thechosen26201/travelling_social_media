@@ -1,14 +1,14 @@
 <template>
     <!-- <slot></slot> -->
-    <ChildForm v-if="this.isSignIn">
+    <!-- <ChildForm v-if="isSignIn"> -->
         <input type="text" class="form-input form-control" placeholder="Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
         <input type="password" class="form-input form-control" placeholder="Mật khẩu" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
         <button type="button" class="sign-in-btn form-btn btn btn-primary">Đăng nhập</button>
         <a href="" class="link-forgot-password mb-2">Quên mật khẩu?</a>
-        <button type="button" class="sign-up-btn form-btn btn btn-success" @click="openSignUpForm">Đăng ký</button>
-    </ChildForm>
+        <button type="button" class="sign-up-btn form-btn btn btn-success" @click="() => toggleSignForm()">Đăng ký</button>
+    <!-- </ChildForm> -->
 
-    <ChildForm v-else>
+    <!-- <ChildForm v-else>
         <div class="container">
             <div class="row">
                 <div class="col-6 p-0"><InputBase :type="'text'" :placeholder="'Họ'"/></div>
@@ -20,8 +20,8 @@
         <InputBase :type="'text'" :placeholder="'Nhập lại mật khẩu'"/>
         <InputBase :type="'date'" :placeholder="'Ngày sinh'"/>
         <button type="button" class="sign-up-btn form-btn btn btn-success">Đăng ký</button>
-        <button class="sign-in-btn form-btn btn btn-primary" @click="openSignUpForm">Đã có tài khoản? Đăng nhập ngay</button>
-    </ChildForm>
+        <button class="sign-in-btn form-btn btn btn-primary" @click="toggleSignForm">Đã có tài khoản? Đăng nhập ngay</button>
+    </ChildForm> -->
 </template>
 <style scoped lang="scss">
     .container-fluid {
@@ -88,21 +88,21 @@
     }
 </style>
 <script>
-import ChildForm from './ChildForm.vue';
+import { ref } from 'vue';
+// import ChildForm from './ChildForm.vue';
 import InputBase from './InputBase.vue';
-
+    
 export default {
-    name: "FormSubmit",
-    components: { ChildForm, InputBase },
-    data() {
-        return {
-            isSignIn: true
+    // name: "FormSubmit",
+    components: { InputBase },
+    
+    setup() {
+        let isSignIn = ref(true);
+        const toggleSignForm = () => {
+            // debugger
+            isSignIn.value = !isSignIn.value;
         }
-    },
-    methods: {
-        openSignUpForm() {
-            return this.isSignIn = !this.isSignIn;
-        }
-    },
+        return {isSignIn, toggleSignForm}
+    }
 }
 </script>

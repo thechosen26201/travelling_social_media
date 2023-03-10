@@ -25,6 +25,7 @@
         &:hover{
             @include ab.buttonHover;
             opacity: 0.8;
+            color: ab.$dark-color;
         }
     }
     &__slider {

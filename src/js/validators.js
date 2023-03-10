@@ -4,14 +4,14 @@ export default function useValidators() {
     // const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const {regexEmail, regexPassword} = regex();
     const isEmpty = (fieldName, fieldValue) => {
-        return !fieldValue ? "The " + fieldName + " field is required" : "";
+        return !fieldValue ? `${fieldName} không được để trống` : "";
     };
     const minLength = (fieldName, fieldValue, min) => {
         return fieldValue.length < min ? `The ${fieldName} field must be atleast ${min} characters long` : "";
     };
     const isEmail = (fieldName, fieldValue) => {
         // debugger
-        return regexEmail.test(fieldValue) ? "" : `The ${fieldName} field is invalid`;
+        return regexEmail.test(fieldValue) ? "" : `${fieldName} không đúng định dạng`;
     }
     const isPassword = (fieldName, fieldValue) => {
         // debugger;

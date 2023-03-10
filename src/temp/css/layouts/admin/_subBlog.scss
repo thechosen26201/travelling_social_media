@@ -2,7 +2,7 @@
 
 .modal {
     @include ab.modal(0, 0, 0, 0);
-    display: none;
+    // display: none;
 }
 .sub-blog {  
     position: absolute;
@@ -13,8 +13,11 @@
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 0 15px 15px ;
-    overflow-y: auto;
-
+    transition: mask-position 0.3s, -webkit-mask-position 0.3s;
+    .scrollable {
+        overflow-y: auto;
+        max-height: 40rem;
+    }
     &__title {
         justify-content: space-between;
         align-items: center;

@@ -45,7 +45,7 @@
                 <div class="user-profile">
                     <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
                     <div>
-                        <p> Alex Carry</p>
+                        <p> {{ token }}</p>
                         <RouterLink :to="{name: 'UserProfile', params: {id: this.test_object.id}}">See your profile</RouterLink>
                     </div>
                 </div>
@@ -77,9 +77,9 @@
                 <a href="#">Display & Accessibility <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
             </div>
 
-            <div class="settings-links">
+            <div class="settings-links" @click="logOut">
                 <img src="../temp/css/assets/images/user_img/logout.png" alt="" class="settings-icon">
-                <a href="#">Logout <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
+                <a>Logout <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
             </div>
 
         </div>
@@ -461,7 +461,8 @@
                     email: 'khanh@gmail.com',
                     phone: '0385182287',
                     address: 'HaNoi'
-                }
+                },
+                token: ''
             }
         },
         methods: {
@@ -488,8 +489,22 @@
              */
             userSettingToggle() {
                 return this.isShowUserSettings = !this.isShowUserSettings;
+            },
+
+            logOut() {
+                localStorage.removeItem('token');
+                this.$router.push('/');
             }
         },
+        created() {
+            this.token = localStorage.getItem('token')
+            if (!this.token) {
+                this.$router.push('/');
+            }
+            else {
+                this.$router.push('/home');
+            }
+        }
     }
 </script>
 <style scoped>

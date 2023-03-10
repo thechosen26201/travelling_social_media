@@ -86,5 +86,7 @@ nav a:first-of-type {
 </style> -->
 
 <style>
-  /* @import url('./temp/css/user.css'); */
+  body {
+    margin: 0;
+  }
 </style>

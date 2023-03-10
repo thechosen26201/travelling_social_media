@@ -1,24 +1,43 @@
 import {reactive} from 'vue';
 import useValidators from './validators';
+import resource from './resource';
 
 const errors = reactive({});
 
 export default function useFormValidation() {
+    // Destructuring hàm useValidators
     const {isEmpty, isEmail, isPassword} = useValidators();
+    // Destructuring hàm resource
+    const {EMAIL, PASSWORD} = resource();
 
     const validateFirstNameField = (fieldName, fieldValue) => {
-        errors[fieldName] = isEmpty(fieldName, fieldValue);
+        try {
+            errors[fieldName] = isEmpty(fieldName, fieldValue);
+            return errors[fieldName] === '';
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const validateEmailField = (fieldName, fieldValue) => {
-        if (fieldName === 'Email') {
-            errors[fieldName] = !fieldValue ? isEmpty(fieldName, fieldValue) : isEmail(fieldName, fieldValue)
-        } 
+        try {
+            if (fieldName === EMAIL) {
+                errors[fieldName] = !fieldValue ? isEmpty(fieldName, fieldValue) : isEmail(fieldName, fieldValue)
+                return errors[fieldName] === '';
+            } 
+        } catch (error) {
+            console.log(error);
+        }
     }
     const validatePasswordField = (fieldName, fieldValue) => {
-        if (fieldName === 'Mật khẩu') {
-            errors[fieldName] = !fieldValue ? isEmpty(fieldName, fieldValue) : isPassword(fieldName, fieldValue)
-        } 
+        try {
+            if (fieldName === PASSWORD) {
+                errors[fieldName] = !fieldValue ? isEmpty(fieldName, fieldValue) : isPassword(fieldName, fieldValue)
+                return errors[fieldName] === '';
+            } 
+        } catch (error) {
+            console.log(error);
+        }
     }
     return { errors, validateFirstNameField, validateEmailField, validatePasswordField}
 }

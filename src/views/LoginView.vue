@@ -133,7 +133,7 @@
                     .then((response) => {
                         console.log(response);
                         this.response_data = Object.assign({}, response);
-                        localStorage.setItem('token', this.response_data.data.idToken)
+                        localStorage.setItem('token', this.response_data.data.refreshToken);
                         this.$router.push('/home');
                         store.dispatch('setAuth', true);
                     })
@@ -173,6 +173,12 @@
             //     firstName: (state) => state.name,
             // }),
             
+        },
+        created() {
+            localStorage.getItem('token')
+            if (localStorage.getItem('token')) {
+                this.$router.push('/home');
+            }
         }
     }
 </script>

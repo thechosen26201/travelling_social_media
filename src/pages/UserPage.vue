@@ -45,7 +45,7 @@
                 <div class="user-profile">
                     <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
                     <div>
-                        <p> {{ token }}</p>
+                        <p> Khanh Nguyen</p>
                         <RouterLink :to="{name: 'UserProfile', params: {id: this.test_object.id}}">See your profile</RouterLink>
                     </div>
                 </div>
@@ -91,8 +91,10 @@
     <div class="container">
         <div class="left-sidebar">
             <div class="important-links">
-                <a href="#"><img src="../temp/css/assets/images/user_img/news.png" alt="">Latest News</a>
-                <a href="#"><img src="../temp/css/assets/images/user_img/friends.png" alt="">Friends</a>
+                <!-- <a href="#"><img src="../temp/css/assets/images/user_img/news.png" alt="">Latest News</a> -->
+                <RouterLink to="/latest"><img src="../temp/css/assets/images/user_img/news.png" alt="">Latest News</RouterLink>
+                <!-- <a href="#"><img src="../temp/css/assets/images/user_img/news.png" alt="">Latest News</a> -->
+                <RouterLink to="/location"><img src="../temp/css/assets/images/user_img/friends.png" alt="">Location</RouterLink>
                 <a href="#"><img src="../temp/css/assets/images/user_img/group.png" alt="">Groups</a>
                 <a href="#"><img src="../temp/css/assets/images/user_img/marketplace.png" alt="">marketplace</a>
                 <a href="#"><img src="../temp/css/assets/images/user_img/watch.png" alt="">Watch</a>
@@ -159,193 +161,7 @@
                 </div>
             </div>
 
-            <div class="status-field-container write-post-container">
-                <div class="user-profile-box">
-                    <div class="user-profile">
-                        <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
-                        <div>
-                            <p> Alex Carry</p>
-                            <small>August 13 1999, 09.18 pm</small>
-                        </div>
-                    </div>
-                    <div>
-                        <a href="#"><i class="fas fa-ellipsis-v"></i></a>
-                    </div>
-                </div>
-                <div class="status-field">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis dolores praesentium dicta
-                        laborum nihil accusantium odit laboriosam, sed sit autem! <a href="#">#This_Post_is_Better!!!!</a>
-                    </p>
-                    <img src="../temp/css/assets/images/user_img/feed-image-1.png" alt="">
-
-                </div>
-                <div class="post-reaction">
-                    <div class="activity-icons">
-                        <div><img src="../temp/css/assets/images/user_img/like.png" alt="">120</div>
-                        <div><img src="../temp/css/assets/images/user_img/comments.png" alt="">52</div>
-                        <div><img src="../temp/css/assets/images/user_img/share.png" alt="">35</div>
-                    </div>
-                    <div class="post-profile-picture">
-                        <img src="../temp/css/assets/images/user_img/profile-pic.png " alt=""> <i class=" fas fa-caret-down"></i>
-                    </div>
-                </div>
-                <div class="post-list-comment border-secondary-subtle">
-                    <div class="user__comment d-flex align-item-start">
-                        <div class="user-profile avatar">
-                            <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
-                        </div>
-                        <div class="comment__block">
-                            <h6 class="username m-0"> Khanh Nguyen</h6>
-                            <div class="comment">
-                                Cai nay hay day
-                            </div>
-                            <div class="response-features d-flex">
-                                <p>Thích</p>
-                                <p class="ms-2">Phản hồi</p>
-                                <div class="ms-2 created-date">10 giờ trước</div>
-                            </div>
-                            <div class="sub-comment d-flex">
-                                <div class="user-profile avatar">
-                                    <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
-                                </div>
-                                <textarea style="resize: none;" class="form-control" id="exampleFormControlTextarea1"
-                                    rows="3" placeholder="Viết bình luận công khai"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="user__comment d-flex align-item-start">
-                        <div class="user-profile avatar">
-                            <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
-                        </div>
-                        <div class="comment__block">
-                            <h6 class="username m-0"> Khanh Nguyen</h6>
-                            <div class="comment">
-                                Cai nay hay day
-                            </div>
-                            <div class="response-features d-flex">
-                                <p>Thích</p>
-                                <p class="ms-2">Phản hồi</p>
-                                <div class="ms-2 created-date">10 giờ trước</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="user__comment d-flex align-item-start">
-                        <div class="user-profile avatar">
-                            <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
-                        </div>
-                        <div class="comment__block">
-                            <h6 class="username m-0"> Khanh Nguyen</h6>
-                            <div class="comment">
-                                Cai nay hay day
-                            </div>
-                            <div class="response-features d-flex">
-                                <p>Thích</p>
-                                <p class="ms-2">Phản hồi</p>
-                                <div class="ms-2 created-date">10 giờ trước</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="post-comment-input border-secondary-subtle">
-                    <div class="comment__input">
-                        <textarea style="resize: none;" class="form-control" id="exampleFormControlTextarea1" rows="3"
-                            placeholder="Viết bình luận công khai"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="status-field-container write-post-container">
-                <div class="user-profile-box">
-                    <div class="user-profile">
-                        <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
-                        <div>
-                            <p> Alex Carry</p>
-                            <small>August 13 1999, 09.18 pm</small>
-                        </div>
-                    </div>
-                    <div>
-                        <a href="#"><i class="fas fa-ellipsis-v"></i></a>
-                    </div>
-                </div>
-                <div class="status-field">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis dolores praesentium dicta
-                        laborum nihil accusantium odit laboriosam, sed sit autem! <a href="#">#This_Post_is_Bigger!!!!</a>
-                    </p>
-                    <img src="../temp/css/assets/images/user_img/feed-image-2.png" alt="">
-
-                </div>
-                <div class="post-reaction">
-                    <div class="activity-icons">
-                        <div><img src="../temp/css/assets/images/user_img/like-blue.png" alt="">120</div>
-                        <div><img src="../temp/css/assets/images/user_img/comments.png" alt="">52</div>
-                        <div><img src="../temp/css/assets/images/user_img/share.png" alt="">35</div>
-                    </div>
-                    <div class="post-profile-picture">
-                        <img src="../temp/css/assets/images/user_img/profile-pic.png " alt=""> <i class=" fas fa-caret-down"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="status-field-container write-post-container">
-                <div class="user-profile-box">
-                    <div class="user-profile">
-                        <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
-                        <div>
-                            <p> Alex Carry</p>
-                            <small>August 13 1999, 09.18 pm</small>
-                        </div>
-                    </div>
-                    <div>
-                        <a href="#"><i class="fas fa-ellipsis-v"></i></a>
-                    </div>
-                </div>
-                <div class="status-field">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis dolores praesentium dicta
-                        laborum nihil accusantium odit laboriosam, sed sit autem! <a href="#">#This_Post_is_faster!!!!</a>
-                    </p>
-                    <img src="../temp/css/assets/images/user_img/feed-image-3.png" alt="">
-
-                </div>
-                <div class="post-reaction">
-                    <div class="activity-icons">
-                        <div><img src="../temp/css/assets/images/user_img/like-blue.png" alt="">120</div>
-                        <div><img src="../temp/css/assets/images/user_img/comments.png" alt="">52</div>
-                        <div><img src="../temp/css/assets/images/user_img/share.png" alt="">35</div>
-                    </div>
-                    <div class="post-profile-picture">
-                        <img src="../temp/css/assets/images/user_img/profile-pic.png " alt=""> <i class=" fas fa-caret-down"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="status-field-container write-post-container">
-                <div class="user-profile-box">
-                    <div class="user-profile">
-                        <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
-                        <div>
-                            <p> Alex Carry</p>
-                            <small>August 13 1999, 09.18 pm</small>
-                        </div>
-                    </div>
-                    <div>
-                        <a href="#"><i class="fas fa-ellipsis-v"></i></a>
-                    </div>
-                </div>
-                <div class="status-field">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis dolores praesentium dicta
-                        laborum nihil accusantium odit laboriosam, sed sit autem! <a href="#">#This_Post_is_perfect!!!!</a>
-                    </p>
-                    <img src="../temp/css/assets/images/user_img/feed-image-4.png" alt="">
-
-                </div>
-                <div class="post-reaction">
-                    <div class="activity-icons">
-                        <div><img src="../temp/css/assets/images/user_img/like-blue.png" alt="">120</div>
-                        <div><img src="../temp/css/assets/images/user_img/comments.png" alt="">52</div>
-                        <div><img src="../temp/css/assets/images/user_img/share.png" alt="">35</div>
-                    </div>
-                    <div class="post-profile-picture">
-                        <img src="../temp/css/assets/images/user_img/profile-pic.png " alt=""> <i class=" fas fa-caret-down"></i>
-                    </div>
-                </div>
-            </div>
+            <RouterView/>
             <button type="button" class="btn-LoadMore" onclick="LoadMoreToggle()">Load More</button>
         </div>
         
@@ -446,8 +262,8 @@
     import 'bootstrap/dist/css/bootstrap.css';
     import 'bootstrap/dist/js/bootstrap.bundle.js';
     import '@fortawesome/vue-fontawesome';
-    import { RouterLink} from 'vue-router';
-    
+    import {RouterView, RouterLink} from 'vue-router';
+
     export default {
         name: 'UserPage',
         data() {
@@ -502,6 +318,7 @@
                 this.$router.push('/');
             }
             else {
+                // console.log('isExpired is:', isJwtExpired(this.token));
                 this.$router.push('/home');
             }
         }

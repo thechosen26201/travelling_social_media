@@ -6,7 +6,19 @@ const router = createRouter({
     {
       path: '/home',
       name: 'user',
-      component: () => import('../pages/UserPage.vue')
+      component: () => import('../pages/UserPage.vue'),
+      children: [
+        {
+          path: '/latest',
+          name: 'latest',
+          component: () => import('../views/LatestView.vue')
+        },
+        {
+          path: '/location',
+          name: 'location',
+          component: () => import('../views/LocationView.vue')
+        },
+      ]
     },
     {
       path: '/',
@@ -31,6 +43,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../pages/UserProfile.vue')
     },
+    
   ]
 })
 

@@ -89,7 +89,7 @@
         border: none;
         outline: none;
         background-color: #fff;
-        padding: 8px;
+        padding: 0.5rem 1rem;
         border-radius: 100px;
         position: sticky;
         top: 3.125em;
@@ -113,11 +113,13 @@
     }
     ul.navlogo {
         margin: 0;
+        padding: 0;
     }
     .search-box {
-        display: none;
+        // display: none;
         &--mobile {
-            @include a.input;
+            // @include a.input;
+            display: none;
         }
     }
     .nav.navbar {
@@ -137,6 +139,9 @@
             z-index: 2;
             box-shadow: 0px 2px 15px grey;
         }
+    }
+    .search-box input {
+        width: 10rem;
     }
 }
 /*medium Tablet*/

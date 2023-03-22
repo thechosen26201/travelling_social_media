@@ -9,8 +9,19 @@
                     Nơi tìm hiểu và chia sẻ những vị trí, trải nghiệm với những địa điểm du lịch                   
                 </div>
             </div>
+            <!-- <div :class="isToastShow? 'show':''" class="toast align-items-center position-absolute" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <font-awesome-icon icon="fa-solid fa-circle-xmark" />
+                        {{toast_message.toString()}}
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" aria-label="Close" @click="closeToast"></button>
+                </div>
+            </div> -->
+            <ToastMessage v-if="isToastShow" :propsMessage="toast_message.toString()" :typeMessage="isError"/>
             <form class="right-side col-12 col-lg-6" @submit.prevent="handleLoginSubmit">
-                <input type="text" v-model="email" class="form-input form-control" placeholder="Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                
+                <input ref="emailInput" type="text" v-model="email" class="form-input form-control" placeholder="Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                 <input type="password" v-model="password" class="form-input form-control" placeholder="Mật khẩu" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                 <button type="submit" class="sign-in-btn form-btn btn btn-primary">Đăng nhập</button>
                 <a href="" class="link-forgot-password mb-2">Quên mật khẩu?</a>
@@ -37,6 +48,7 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
+        padding: 0;
         & img {
             max-width: 100%;
         }
@@ -59,10 +71,13 @@
             box-shadow: none;
         }
     }
-    input.form-input, .form-btn {
+    input.form-input{
         margin-bottom: 1rem;
         width: 100%;
     } 
+    .form-btn {
+        width: 100%;
+    }
     button {
         font-weight: bold;
         padding: 0.5rem;
@@ -91,6 +106,14 @@
             text-align: center;
         }
     }
+    @media (min-width: 768px) and (max-width: 992px) {
+        .title {
+            text-align: center;
+        }
+        .logo {
+            background-position-x: center;
+        }
+    }
     @media (min-width: 1200px) {
         .container-fluid {
             height: 100vh;
@@ -101,21 +124,26 @@
     import 'bootstrap/dist/css/bootstrap.css';
     import 'bootstrap/dist/js/bootstrap.bundle.js';
     import '@fortawesome/vue-fontawesome';
-    import {mapState, mapActions} from 'vuex';
     import store from '../store/store';
     import axios from 'axios';
-
-    // import {FormSubmit} from '../components/test.js';
-    // import FormSubmit from '../components/FormSubmit.vue';
+    import validators from '../js/validators';
+    import resource from '../js/resource';
+    import useErrors from '../js/errors';
+    import ToastMessage from '../components/ToastMessage.vue';
 
     export default {
         name: 'LoginView',
+        components: {ToastMessage},
         data() {
             return {
                 email: '',
                 password: '',
                 login_data: {} ,
                 response_data: {},
+                messages: {},
+                toast_message: '',
+                isToastShow: false,
+                isError: true
             }
         },
         methods: {
@@ -125,29 +153,87 @@
 
             handleLoginSubmit() {
                 try {
-                    this.login_data['email'] = this.email;
-                    this.login_data['password'] = this.password;
-                    this.login_data.returnSecureToken = true;
-                    axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDT5wm4oPfy7gUnuLQSQrWf-0Hyg0lR28U',
-                        this.login_data)
-                    .then((response) => {
-                        console.log(response);
-                        this.response_data = Object.assign({}, response);
-                        localStorage.setItem('token', this.response_data.data.refreshToken);
-                        this.$router.push('/home');
-                        store.dispatch('setAuth', true);
-                    })
-                    .catch(e => {
-                        console.log(e);
-                        store.dispatch('setAuth', false);
-                    }) 
+                    const {INVALID_PASSWORD, EMAIL_NOT_FOUND} = useErrors();
+                    if(this.validateInput(this.email, this.password)) {
+                        this.login_data['email'] = this.email;
+                        this.login_data['password'] = this.password;
+                        this.login_data.returnSecureToken = true;
+                        axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDT5wm4oPfy7gUnuLQSQrWf-0Hyg0lR28U',
+                            this.login_data)
+                        .then((response) => {
+                            console.log(response);
+                            this.response_data = Object.assign({}, response);
+                            this.messages['success'] = 'Đăng nhập thành công';
+                            this.showToastMessage(false);
+                            this.pushToLatestView();
+                            store.dispatch('setAuth', true);
+                        })
+                        .catch(e => {
+                            console.log(e);
+                            store.dispatch('setAuth', false);
+                            if(e.response.data.error.message === 'INVALID_PASSWORD') {
+                                this.messages['password'] = INVALID_PASSWORD;
+                                this.showToastMessage(true);
+                            }
+                            else if(e.response.data.error.message === 'EMAIL_NOT_FOUND') {
+                                this.messages['email'] = EMAIL_NOT_FOUND;
+                                this.showToastMessage(true);
+                            }
+                        }) 
+                    }
+                    else {
+                        this.showToastMessage(true);
+                    }
                 } catch (error) {
                     console.log(error);
                 }
             },
+            /**
+             * Lưu token và đẩy về trang home
+             * 13/03/23
+             */
+            pushToLatestView() {
+                localStorage.setItem('token', JSON.stringify(this.response_data.data));
+                this.$router.push('/latest');
+            },
 
-            pushToHomeView() {
+            validateInput(email, password) {
+                const {isEmail, isEmpty} = validators();
+                const {EMAIL, PASSWORD} = resource();
+                this.messages = {};
+                if(isEmpty(EMAIL, email) || isEmpty(PASSWORD, password)) {
+                    this.messages['empty'] = 'Vui lòng điền đủ email / mật khẩu';
+                    return false;
+                }
+                else if(isEmail(EMAIL, email)) {
+                    this.messages['email'] = 'Vui lòng kiểm tra lại email'
+                    return false
+                }
+                this.messages = {};
+                return true;
+            },
+            /**
+             * Hiện toast message
+             */
+            showToastMessage(isError) {
+                this.toast_message = Object.values(this.messages);
+                this.isError = isError;
+                this.isToastShow = true;
+                this.timeOutHandle();
+            }, 
 
+            timeOutHandle() {
+                let timer = setTimeout(() => {
+                    this.isToastShow = false;
+                    this.toast_message = {};
+                }, 5 * 1000);
+                return timer;
+            },
+            /**
+             * Đóng toast message
+             */
+            closeToast() {
+                return this.isToastShow = false;
             }
         },
         computed: {
@@ -174,11 +260,14 @@
             // }),
             
         },
+        mounted() {
+            this.$refs.emailInput.focus()
+        },
         created() {
-            localStorage.getItem('token')
-            if (localStorage.getItem('token')) {
-                this.$router.push('/home');
-            }
+            // localStorage.getItem('token')
+            // if (localStorage.getItem('token')) {
+            //     this.$router.push('/latest');
+            // }
         }
     }
 </script>

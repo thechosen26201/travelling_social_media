@@ -1,13 +1,10 @@
 <template>
-    <div class="row sign-in-form">
-        <slot></slot>
-    </div>
+    <slot></slot>
 </template>
 
 <script >
     import 'bootstrap/dist/css/bootstrap.css';
     import 'bootstrap/dist/js/bootstrap.bundle.js';
     export default {
-        name: 'ChildForm'
     }
 </script>

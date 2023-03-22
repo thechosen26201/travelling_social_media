@@ -5,7 +5,7 @@
                 <div class="logo">
                     <!-- <img src="../temp/css/assets/images/user_img/logo3.png" alt="Social book"> -->
                 </div>
-                <h1>{{ firstName }}</h1>
+                <!-- <h1>{{ firstName }}</h1> -->
                 <div class="title">
                     Nơi tìm hiểu và chia sẻ những vị trí, trải nghiệm với những địa điểm du lịch                   
                 </div>
@@ -136,10 +136,12 @@ export default {
             box-shadow: none;
         }
     }
-    input.form-input, .form-btn {
+    input.form-input, .sign-up-btn {
         margin-bottom: 1rem;
-        width: 100%;
     } 
+    .sign-in-btn, .sign-up-btn {
+        width: 100%;
+    }
     button {
         font-weight: bold;
         padding: 0.5rem;

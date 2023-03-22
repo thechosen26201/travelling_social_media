@@ -1,6 +1,10 @@
 @use '../abstracts/' as a;
 
 @media (max-width: 576px) {
+    nav.navbar {
+        padding-left: 3%;
+        padding-right: 0;
+    }
     .nav-right, .navlogo {
         display: none;
     }
@@ -63,7 +67,8 @@
         }
     }
     .collapse__button {
-        display: block;
+        display: flex;
+        align-items: center;
     }
 
     .story img {
@@ -74,11 +79,10 @@
         padding: 12px;
         width: 40px;
         height: 40px;
-        position: relative;
         background-color: var(--body-color);
         display: flex;
         align-items: center;
-        right: -3.125em;
+        margin-right: 0.25em;
         img {
             width: 1em;
         }
@@ -99,6 +103,11 @@
 }
 
 @media (min-width: 576px) and (max-width: 768px) {
+    .left-sidebar, .right-sidebar {
+        overflow-y: auto;
+        // height: 90vh;
+        min-width: 200px;
+    }
     .sub-nav {
         display: none;
     }
@@ -116,9 +125,7 @@
         padding: 0;
     }
     .search-box {
-        // display: none;
         &--mobile {
-            // @include a.input;
             display: none;
         }
     }
@@ -143,6 +150,10 @@
     .search-box input {
         width: 10rem;
     }
+    .content-area {
+        flex-basis: 60%;
+    }
+
 }
 /*medium Tablet*/
 @media (min-width: 768px) and (max-width: 992px) {
@@ -157,8 +168,7 @@
     }
     .left-sidebar, .right-sidebar {
         overflow-y: auto;
-        /* overflow-x: hidden; */
-        height: 90vh;
+        // height: 90vh;
         min-width: 200px;
     }
     .right-sidebar {
@@ -175,5 +185,10 @@
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
-    
+    .left-sidebar, .right-sidebar {
+        overflow-y: auto;
+        /* overflow-x: hidden; */
+        // height: 90vh;
+        min-width: 200px;
+    }
 }

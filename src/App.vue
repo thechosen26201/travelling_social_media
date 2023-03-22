@@ -88,5 +88,7 @@ nav a:first-of-type {
 <style>
   body {
     margin: 0;
+    overflow: hidden;
+    height: 90vh;
   }
 </style>

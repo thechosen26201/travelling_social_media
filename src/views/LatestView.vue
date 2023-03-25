@@ -1,5 +1,5 @@
 <template>
-    <div class="status-field-container write-post-container" v-for="index in 3" :key="index">
+    <div class="status-field-container write-post-container" v-for="(post, index) in listPost" :key="post.id">
         <div class="user-profile-box">
             <div class="user-profile">
                 <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
@@ -16,82 +16,13 @@
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis dolores praesentium dicta
                 laborum nihil accusantium odit laboriosam, sed sit autem! <a href="#">#This_Post_is_Better!!!!</a>
             </p>
-            <!-- <div class="sub-blog__post">
-                <div class="sub-blog__post-slider">
-
-                    <div class="mySlides" ref="mySlides">
-                        <div class="numbertext">1 / 6</div>
-                        <img src="../temp/css/assets/images/user_img/feed-image-1.png" style="width:100%">
-                    </div>
-
-                    <div class="mySlides" ref="mySlides">
-                        <div class="numbertext">2 / 6</div>
-                        <img src="../temp/css/assets/images/user_img/feed-image-1.png" style="width:100%">
-                    </div>
-
-
-
-                    <a class="prev" @click="plusSlides(-1)">❮</a>
-                    <a class="next" @click="plusSlides(1)">❯</a>
-
-                    <div class="row">
-                        <div class="column">
-                            <img ref="demo" class="demo cursor" src="../temp/css/assets/images/user_img/feed-image-1.png"
-                                style="width:100%" @click="currentSlide(1)" alt="The Woods">
-                        </div>
-                        <div class="column">
-                            <img ref="demo" class="demo cursor" src="../temp/css/assets/images/user_img/feed-image-1.png"
-                                style="width:100%" @click="currentSlide(2)" alt="Cinque Terre">
-                        </div>
-                        <div class="column">
-                            <img ref="demo" class="demo cursor" src="../temp/css/assets/images/user_img/feed-image-1.png"
-                                style="width:100%" @click="currentSlide(3)" alt="Cinque Terre">
-                        </div>
-                        <div class="column">
-                            <img ref="demo" class="demo cursor" src="../temp/css/assets/images/user_img/feed-image-1.png"
-                                style="width:100%" @click="currentSlide(4)" alt="Cinque Terre">
-                        </div>
-                        <div class="column">
-                            <img ref="demo" class="demo cursor" src="../temp/css/assets/images/user_img/feed-image-1.png"
-                                style="width:100%" @click="currentSlide(5)" alt="Cinque Terre">
-                        </div>
-                        <div class="column">
-                            <img ref="demo" class="demo cursor" src="../temp/css/assets/images/user_img/feed-image-1.png"
-                                style="width:100%" @click="currentSlide(6)" alt="Cinque Terre">
-                        </div>
-                        <div class="column">
-                            <img ref="demo" class="demo cursor" src="../temp/css/assets/images/user_img/feed-image-1.png"
-                                style="width:100%" @click="currentSlide(7)" alt="Cinque Terre">
-                        </div>
-                        <div class="column">
-                            <img ref="demo" class="demo cursor" src="../temp/css/assets/images/user_img/feed-image-1.png"
-                                style="width:100%" @click="currentSlide(8)" alt="Cinque Terre">
-                        </div>
-                        <div class="column">
-                            <img ref="demo" class="demo cursor" src="../temp/css/assets/images/user_img/feed-image-1.png"
-                                style="width:100%" @click="currentSlide(9)" alt="Cinque Terre">
-                        </div>
-                        <div class="column">
-                            <img ref="demo" class="demo cursor" src="../temp/css/assets/images/user_img/feed-image-1.png"
-                                style="width:100%" @click="currentSlide(10)" alt="Cinque Terre">
-                        </div>
-                        <div class="column">
-                            <img ref="demo" class="demo cursor" src="../temp/css/assets/images/user_img/feed-image-1.png"
-                                style="width:100%" @click="currentSlide(11)" alt="Cinque Terre">
-                        </div>
-                        <div class="column">
-                            <img ref="demo" class="demo cursor" src="../temp/css/assets/images/user_img/feed-image-1.png"
-                                style="width:100%" @click="currentSlide(12)" alt="Cinque Terre">
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+            
             <div class="sub-blog__post">
                 <div class="sub-blog__post-slider">
                     <Carousel id="gallery" :items-to-show="1" :wrap-around="false" v-model="currentSlide">
-                        <Slide v-for="(slide, index) in listPost" :key="index">
+                        <Slide v-for="(slide, index) in post['images']" :key="index">
                             <div class="carousel__item">
-                                <img :src="getImageUrl('../temp/css/assets/images/user_img/feed-image-1.png')">
+                                <img :src="getImageUrl(slide['path'])">
                             </div>
                         </Slide>
                         <template #addons>
@@ -106,8 +37,10 @@
                         v-model="currentSlide"
                         ref="carousel"
                     >
-                        <Slide v-for="slide in 10" :key="slide">
-                            <div class="carousel__item" @click="slideTo(slide - 1)">{{ slide }}</div>
+                        <Slide v-for="slide in post['images']" :key="slide">
+                            <div class="carousel__item" @click="slideTo(slide - 1)">
+                                <img :src="getImageUrl(slide['path'])">
+                            </div>
                         </Slide>
                     </Carousel>
                 </div>
@@ -124,32 +57,8 @@
             </div>
         </div>
         <div class="post-list-comment border-secondary-subtle">
-            <div class="user__comment d-flex align-item-start">
-                <div class="user-profile avatar">
-                    <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
-                </div>
-                <div class="comment__block">
-                    <h6 class="username m-0"> Khanh Nguyen</h6>
-                    <div class="comment">
-                        Cai nay hay day
-                    </div>
-                    <div class="response-features d-flex">
-                        <p>Thích</p>
-                        <p class="ms-2">Phản hồi</p>
-                        <div class="ms-2 created-date">10 giờ trước</div>
-                    </div>
-                    <div class="sub-comment d-flex">
-                        <div class="user-profile avatar">
-                            <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
-                        </div>
-                        <textarea style="resize: none;" class="form-control" id="exampleFormControlTextarea1" rows="3"
-                            placeholder="Viết bình luận công khai"></textarea>
-                    </div>
-                    <!-- Reply -->
-                    <!-- <CommentBlock/> -->
-                </div>
-            </div>
-            <CommentBlock :commentList="commentList"/>
+            
+            <CommentBlock :commentList="post['comments']"/>
             
         </div>
         <div class="post-comment-input border-secondary-subtle">
@@ -162,26 +71,50 @@
 </template>
 <script>
 import {onMounted, ref, computed, reactive } from 'vue';
-import modalSlider from '../js/modalSlider'
 import CommentBlock from '../components/CommentBlock.vue';
 import { Carousel, Slide, Navigation } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css'
 
 export default {
     name: 'LatestView',
-    components: {CommentBlock, Carousel, Slide, Navigation,},
+    components: {CommentBlock, Carousel, Slide, Navigation},
     setup(props) {
         let comment = ref('');
         let listPost = reactive([
-            {id: 1, path: "../temp/css/assets/images/user_img/feed-image-1.png"},
-            {id: 1, path: "../temp/css/assets/images/user_img/feed-image-1.png"},
-            {id: 1, path: "../temp/css/assets/images/user_img/feed-image-1.png"},
+            {
+                id: 1, 
+                images: [
+                    {id_image: 1, path: "../temp/css/assets/images/user_img/feed-image-1.png"},
+                    {id_image: 2, path: "../temp/css/assets/images/user_img/feed-image-2.png"},
+                    {id_image: 3, path: "../temp/css/assets/images/user_img/feed-image-3.png"}
+                ],
+                comments: [
+                    {
+                        id: 1, 
+                        username: 'Naruto', 
+                        text: 'OK nhe', 
+                        id_parent: null,
+                        comments: [
+                            {id: 2, username: 'Khanh Nguyen', text: 'Cai djt me cuoc doi', id_parent: 1, comments: [
+                                {id: 5, username: 'Khanh Nguyen', text: 'Deo', id_parent: 2, comments: null},
+                            ]},
+                        ]
+                    },
+                    {
+                        id: 3, 
+                        username: 'Sasuke', 
+                        text: 'OK nhe', 
+                        id_parent: null,
+                        comments: [
+                            {id: 4, username: 'Khanh Nguyen', text: 'Deo', id_parent: 3, comments: null},
+                        ]
+                    },
+                ]
+            },
+            
         ]);
         let commentList = ref([
-            {id: 1, username: 'Naruto', comment: 'OK nhe', id_parent: null},
-            {id: 2, username: 'Sasuke', comment: 'OK nhe', id_parent: null},
-            {id: 3, username: 'Khanh Nguyen', comment: 'Deo', id_parent: 2},
-            {id: 3, username: 'Khanh Nguyen', comment: 'Cai djt me cuoc doi', id_parent: 1},
+            
         ]);
         let currentSlide = ref(0);
 
@@ -189,10 +122,7 @@ export default {
             currentSlide.value = val
         };
 
-        onMounted(() => {
-            // console.log(mySlides.value);
-            // showSlides(slideIndex);
-        });
+        
 
         const postComment = computed(() => {
             commentList.value.push({id: 3, username: 'Khanh Nguyen', comment: comment.value})
@@ -208,7 +138,7 @@ export default {
         }
   
         // const {slideIndex, i, plusSlides, currentSlide, showSlides} = modalSlider();
-        return {slideTo, currentSlide, comment, commentList, postComment, listPost, getImageUrl};
+        return {slideTo, currentSlide, comment, postComment, listPost, getImageUrl};
     }
 }
 </script>
@@ -227,7 +157,6 @@ export default {
 .carousel__item {
   /* min-height: 200px; */
   width: 100%;
-  background-color: #10b981;
   color: #fff;
   font-size: 20px;
   border-radius: 8px;

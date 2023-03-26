@@ -44,6 +44,7 @@ export default {
                         id_parent: item['id'],
                         comments: null
                     });
+                itemArray.value = itemArray.value.filter(i => i !== item)
             }
             else {
                 item['comments'].push({
@@ -53,6 +54,7 @@ export default {
                         id_parent: item['id'],
                         comments: null
                     });
+                itemArray.value = itemArray.value.filter(i => i !== item)
             }
         }
         return {list, toggleCommentBlock, itemArray, comment, postComment};

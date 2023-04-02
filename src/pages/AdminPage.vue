@@ -9,7 +9,7 @@
 				</li>
 				<li class="navigation__list-item selected">
 					<font-awesome-icon icon="fa-solid fa-blog"/>
-					Pending blog
+					<router-link to="/blog">Pending blog</router-link>
 				</li>
 				<li class="navigation__list-item">
 					<font-awesome-icon icon="fa-solid fa-user"/>
@@ -38,92 +38,22 @@
 				</div>
 			</div>
 			<div class="main__content">
-				<div class="main__content-table">
-					<table>
-						<thead>
-							<tr>
-								<th>Blog ID</th>
-								<th>User ID</th>
-								<th>Username</th>
-								<th>Description</th>
-								<th>Created Date</th>
-								<th>Accept</th>
-								<th>Deny</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr @dblclick="toggleModal">
-								<td>#001</td>
-								<td>1</td>
-								<td>khanhnguyen</td>
-								<td class="table__description">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-									Nulla saepe perferendis nemo amet sit rem perspiciatis cum, rerum numquam laboriosam
-									ipsum a aliquid sequi nostrum labore ab! Obcaecati, vel accusamus!</td>
-								<td class="date">06/02/23</td>
-								<td>
-									<button class="button--accept">Accept</button>
-								</td>
-								<td>
-									<button class="button--deny">Deny</button>
-								</td>
-							</tr>
-							<tr>
-								<td>#001</td>
-								<td>2</td>
-								<td>khanhnguyen</td>
-								<td class="table__description">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-									Nulla saepe perferendis nemo amet sit rem perspiciatis cum, rerum numquam laboriosam
-									ipsum a aliquid sequi nostrum labore ab! Obcaecati, vel accusamus!</td>
-								<td></td>
-								<td>
-									<button class="button--accept">Accept</button>
-								</td>
-								<td>
-									<button class="button--deny">Deny</button>
-								</td>
-							</tr>
-							<tr>
-								<td>#001</td>
-								<td>3</td>
-								<td>khanhnguyen</td>
-								<td class="table__description">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-									Nulla saepe perferendis nemo amet sit rem perspiciatis cum, rerum numquam laboriosam
-									ipsum a aliquid sequi nostrum labore ab! Obcaecati, vel accusamus!</td>
-								<td></td>
-								<td>
-									<button class="button--accept">Accept</button>
-								</td>
-								<td>
-									<button class="button--deny">Deny</button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+				<router-view></router-view>
 			</div>
 
-            <ModalForm v-if="isModalShow" @closeModal="closeModal"/>
+            
 		</div>
 	</div>
 </template>
 <script>
     import '@fortawesome/vue-fontawesome';
-    import ModalForm from '../components/ModalForm.vue';
-
     import { ref } from 'vue';
+	import {RouterView, RouterLink} from 'vue-router';
 
     export default {
         name: 'Admin',
-        components: {ModalForm},
         setup(props) {
-            let isModalShow = ref(false);
-            const toggleModal = () => {
-                isModalShow.value = !isModalShow.value;
-            };
-			const closeModal = (closeForm) => {
-				isModalShow.value = closeForm;
-			}
-            return {isModalShow, toggleModal, closeModal};
+            
         }
     }
 </script>
@@ -146,5 +76,12 @@
 		top: 0;
 		left: 0;
 		z-index: 2;
+	}
+	a {
+		text-decoration: none;
+		color: #fff;
+	}
+	svg {
+		min-width: 20px;
 	}
 </style>

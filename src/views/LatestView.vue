@@ -37,8 +37,8 @@
                         v-model="currentSlide"
                         ref="carousel"
                     >
-                        <Slide v-for="slide in post['images']" :key="slide">
-                            <div class="carousel__item" @click="slideTo(slide - 1)">
+                        <Slide v-for="(slide, index) in post['images']" :key="slide">
+                            <div class="carousel__item" @click="slideTo(index + 1  - 1)">
                                 <img :src="getImageUrl(slide['path'])">
                             </div>
                         </Slide>
@@ -49,7 +49,7 @@
         <div class="post-reaction">
             <div class="activity-icons">
                 <div><img src="../temp/css/assets/images/user_img/like.png" alt="">120</div>
-                <div><img src="../temp/css/assets/images/user_img/comments.png" alt="">52</div>
+                <div><img src="../temp/css/assets/images/user_img/comments.png" alt="">{{totalComment[index]}}</div>
                 <div><img src="../temp/css/assets/images/user_img/share.png" alt="">35</div>
             </div>
             <div class="post-profile-picture">
@@ -64,13 +64,13 @@
         <div class="post-comment-input border-secondary-subtle">
             <div class="comment__input">
                 <textarea v-model="comment" style="resize: none;" class="form-control" id="exampleFormControlTextarea1" rows="3"
-                    placeholder="Viết bình luận công khai" @keyup.enter="postComment"></textarea>
+                    placeholder="Viết bình luận công khai" @keyup.enter="postComment(post.id, index)"></textarea>
             </div>
         </div>
     </div>
 </template>
 <script>
-import {onMounted, ref, computed, reactive } from 'vue';
+import {onMounted, ref, computed, reactive, watch } from 'vue';
 import CommentBlock from '../components/CommentBlock.vue';
 import { Carousel, Slide, Navigation } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css'
@@ -80,7 +80,9 @@ export default {
     components: {CommentBlock, Carousel, Slide, Navigation},
     setup(props) {
         let comment = ref('');
-        let listPost = reactive([
+        const total = ref([]);
+        const totalComment = ref([]);
+        let listPost = ref([
             {
                 id: 1, 
                 images: [
@@ -109,12 +111,9 @@ export default {
                             {id: 4, username: 'Khanh Nguyen', text: 'Deo', id_parent: 3, comments: null},
                         ]
                     },
-                ]
+                ],
+                reactions: 12
             },
-            
-        ]);
-        let commentList = ref([
-            
         ]);
         let currentSlide = ref(0);
 
@@ -122,23 +121,49 @@ export default {
             currentSlide.value = val
         };
 
-        
-
-        const postComment = computed(() => {
-            commentList.value.push({id: 3, username: 'Khanh Nguyen', comment: comment.value})
+        const postComment = (post_id, index) => {
+            listPost.value[index]['comments'].push({id: 20, username: 'Khanh Nguyen', text: comment.value, id_parent: post_id, comments: null})
             comment.value = '';
-        });
-
-        const postReply = computed(() => {
-
-        });
+            totalComment.value[index] += 1;
+        };
 
         const getImageUrl = (name) => {
             return new URL(name, import.meta.url).href
         }
-  
-        // const {slideIndex, i, plusSlides, currentSlide, showSlides} = modalSlider();
-        return {slideTo, currentSlide, comment, postComment, listPost, getImageUrl};
+        
+        const fetchPost = async () => {
+            const querySnapshot = await getDocs(collection(db, "news"));
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+            });
+        }
+
+        const getTotalComment = onMounted(() => {
+            let temp = ref(listPost.value);
+            for (const iterator of temp.value) {
+                total.value = 0;
+                if(iterator['comments'] !== [] || iterator['comments']) {
+                    recursiveComment(iterator['comments']);
+                }
+                totalComment.value.push(total.value)
+            }
+            return totalComment;
+        });
+
+        const recursiveComment = (commentArray) => {
+            if (commentArray) {
+                for (const iterator of commentArray) {
+                    if(iterator['comments'] !== [] || iterator['comments']) {
+                        total.value += 1;
+                        recursiveComment(iterator['comments']);
+                    }
+                }
+            }
+            return total.value;
+        };
+        
+        return {slideTo, currentSlide, comment, postComment, listPost, getImageUrl, getTotalComment, total, totalComment};
     }
 }
 </script>
@@ -178,5 +203,7 @@ export default {
 #gallery .carousel__track li{
     padding: 0;
 }
-
+#gallery .carousel__track li:hover, #thumbnails .carousel__track li:hover{
+    cursor: pointer;
+}
 </style>

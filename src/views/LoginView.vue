@@ -9,15 +9,7 @@
                     Nơi tìm hiểu và chia sẻ những vị trí, trải nghiệm với những địa điểm du lịch                   
                 </div>
             </div>
-            <!-- <div :class="isToastShow? 'show':''" class="toast align-items-center position-absolute" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        <font-awesome-icon icon="fa-solid fa-circle-xmark" />
-                        {{toast_message.toString()}}
-                    </div>
-                    <button type="button" class="btn-close me-2 m-auto" aria-label="Close" @click="closeToast"></button>
-                </div>
-            </div> -->
+            
             <ToastMessage v-if="isToastShow" :propsMessage="toast_message.toString()" :typeMessage="isError"/>
             <form class="right-side col-12 col-lg-6" @submit.prevent="handleLoginSubmit">
                 
@@ -124,12 +116,13 @@
     import 'bootstrap/dist/css/bootstrap.css';
     import 'bootstrap/dist/js/bootstrap.bundle.js';
     import '@fortawesome/vue-fontawesome';
-    import store from '../store/store';
     import axios from 'axios';
+    
     import validators from '../js/validators';
     import resource from '../js/resource';
     import useErrors from '../js/errors';
     import ToastMessage from '../components/ToastMessage.vue';
+    import store from '../store/store';
 
     export default {
         name: 'LoginView',
@@ -151,40 +144,28 @@
                 this.$router.push('/signup');
             },
 
-            handleLoginSubmit() {
+            async handleLoginSubmit() {
                 try {
                     const {INVALID_PASSWORD, EMAIL_NOT_FOUND} = useErrors();
-                    if(this.validateInput(this.email, this.password)) {
-                        this.login_data['email'] = this.email;
-                        this.login_data['password'] = this.password;
-                        this.login_data.returnSecureToken = true;
-                        axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDT5wm4oPfy7gUnuLQSQrWf-0Hyg0lR28U',
-                            this.login_data)
-                        .then((response) => {
-                            console.log(response);
-                            this.response_data = Object.assign({}, response);
-                            this.messages['success'] = 'Đăng nhập thành công';
-                            this.showToastMessage(false);
-                            this.pushToLatestView();
-                            store.dispatch('setAuth', true);
-                        })
-                        .catch(e => {
-                            console.log(e);
-                            store.dispatch('setAuth', false);
-                            if(e.response.data.error.message === 'INVALID_PASSWORD') {
-                                this.messages['password'] = INVALID_PASSWORD;
-                                this.showToastMessage(true);
-                            }
-                            else if(e.response.data.error.message === 'EMAIL_NOT_FOUND') {
-                                this.messages['email'] = EMAIL_NOT_FOUND;
-                                this.showToastMessage(true);
-                            }
-                        }) 
-                    }
-                    else {
-                        this.showToastMessage(true);
-                    }
+                    this.login_data['username'] = this.email;
+                    this.login_data['password'] = this.password;
+                    await axios.post(`auth/authenticate`, this.login_data)
+                    .then((response) => {
+                        console.log(response);
+                        this.response_data = Object.assign({}, response);
+                        this.messages['success'] = 'Đăng nhập thành công';
+                        this.showToastMessage(false);
+                        store.dispatch('setAuth', true);
+                        // setAuthHeader(response.data.token);
+                        this.pushToLatestView();
+                    })
+                    .catch(e => {
+                        store.dispatch('setAuth', false);
+                        console.log(e);
+                    }) 
+                    
                 } catch (error) {
+                    store.dispatch('setAuth', false);
                     console.log(error);
                 }
             },
@@ -261,13 +242,13 @@
             
         },
         mounted() {
-            this.$refs.emailInput.focus()
+            this.$refs.emailInput.focus();
         },
         created() {
-            // localStorage.getItem('token')
-            // if (localStorage.getItem('token')) {
-            //     this.$router.push('/latest');
-            // }
+            localStorage.getItem('token')
+            if (localStorage.getItem('token')) {
+                this.$router.push('/latest');
+            }
         }
     }
 </script>

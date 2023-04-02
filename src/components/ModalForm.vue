@@ -26,74 +26,30 @@
                     </div>
                 </div>
                 <div class="sub-blog__post">
-                    <!-- <div class="sub-blog__post-slider flex"> -->
                     <div class="sub-blog__post-slider">
-                        
-                        <div class="mySlides" ref="mySlides">
-                            <div class="numbertext">1 / 6</div>
-                            <img src="../temp/css/assets/images/places/newyork.jpg" style="width:100%">
-                        </div>
-    
-                        <div class="mySlides" ref="mySlides">
-                            <div class="numbertext">2 / 6</div>
-                            <img src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%">
-                        </div>
-    
-                        
-    
-                        <a class="prev" @click="plusSlides(-1)">❮</a>
-                        <a class="next" @click="plusSlides(1)">❯</a>
-                        
-                        <div class="row">
-                            <div class="column">
-                                <img ref="demo" class="demo cursor" src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%"
-                                    @click="currentSlide(1)" alt="The Woods">
-                            </div>
-                            <div class="column">
-                                <img ref="demo" class="demo cursor" src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%"
-                                    @click="currentSlide(2)" alt="Cinque Terre">
-                            </div>
-                            <div class="column">
-                                <img ref="demo" class="demo cursor" src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%"
-                                    @click="currentSlide(3)" alt="Cinque Terre">
-                            </div>
-                            <div class="column">
-                                <img ref="demo" class="demo cursor" src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%"
-                                    @click="currentSlide(4)" alt="Cinque Terre">
-                            </div>
-                            <div class="column">
-                                <img ref="demo" class="demo cursor" src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%"
-                                    @click="currentSlide(5)" alt="Cinque Terre">
-                            </div>
-                            <div class="column">
-                                <img ref="demo" class="demo cursor" src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%"
-                                    @click="currentSlide(6)" alt="Cinque Terre">
-                            </div>
-                            <div class="column">
-                                <img ref="demo" class="demo cursor" src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%"
-                                    @click="currentSlide(7)" alt="Cinque Terre">
-                            </div>
-                            <div class="column">
-                                <img ref="demo" class="demo cursor" src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%"
-                                    @click="currentSlide(8)" alt="Cinque Terre">
-                            </div>
-                            <div class="column">
-                                <img ref="demo" class="demo cursor" src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%"
-                                    @click="currentSlide(9)" alt="Cinque Terre">
-                            </div>
-                            <div class="column">
-                                <img ref="demo" class="demo cursor" src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%"
-                                    @click="currentSlide(10)" alt="Cinque Terre">
-                            </div>
-                            <div class="column">
-                                <img ref="demo" class="demo cursor" src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%"
-                                    @click="currentSlide(11)" alt="Cinque Terre">
-                            </div>
-                            <div class="column">
-                                <img ref="demo" class="demo cursor" src="../temp/css/assets/images/places/sanfran.jpg" style="width:100%"
-                                    @click="currentSlide(12)" alt="Cinque Terre">
-                            </div>
-                        </div>
+                        <Carousel id="gallery" :items-to-show="1" :wrap-around="false" v-model="currentSlide">
+                            <Slide v-for="(slide, index) in images" :key="index">
+                                <div class="carousel__item">
+                                    <img :src="getImageUrl(slide['path'])">
+                                </div>
+                            </Slide>
+                            <template #addons>
+                                <Navigation />
+                            </template>
+                        </Carousel>
+
+                        <Carousel
+                            id="thumbnails"
+                            :items-to-show="4"
+                            :wrap-around="true"
+                            v-model="currentSlide"
+                            ref="carousel">
+                            <Slide v-for="(slide, index) in images" :key="slide">
+                                <div class="carousel__item" @click="slideTo(index + 1 - 1)">
+                                    <img :src="getImageUrl(slide['path'])">
+                                </div>
+                            </Slide>
+                        </Carousel>
                     </div>
                 </div>
                 <div class="sub-blog__reaction flex">
@@ -135,78 +91,30 @@
 </template>
 <script>
 import {ref, onMounted} from 'vue';
+import { Carousel, Slide, Navigation } from 'vue3-carousel';
+import 'vue3-carousel/dist/carousel.css'
 import '@fortawesome/vue-fontawesome';
+
 export default {
-    // props: ['showModal'],
-    // data() {
-    //     return {
-    //         slideIndex: 1,    
-    //     }
-    // },
-    // methods: {
+    components: {Carousel, Slide, Navigation},
 
-    //     plusSlides(n) {
-    //         this.showSlides(this.slideIndex += n);
-    //     },
-        
-    //     currentSlide(n) {
-    //         this.showSlides(this.slideIndex = n);
-    //     },
-        
-    //     showSlides(n) {
-    //         let i;
-    //         let slides = document.getElementsByClassName("mySlides");
-    //         let dots = document.getElementsByClassName("demo");
-    //         if (n > slides.length) {this.slideIndex = 1}
-    //         if (n < 1) {this.slideIndex = slides.length}
-    //         for (i = 0; i < slides.length; i++) {
-    //         slides[i].style.display = "none";
-    //         }
-    //         for (i = 0; i < dots.length; i++) {
-    //         dots[i].className = dots[i].className.replace(" active", "");
-    //         }
-    //         slides[this.slideIndex-1].style.display = "block";
-    //         dots[this.slideIndex-1].className += " active";
-    //     }
-    // },
-    // mounted() {
-    //     this.showSlides(this.slideIndex);
-    // },
     setup(props, {emit}) {
-        let slideIndex = 1;
-        let isClose = ref(false);
-        let i;
-        onMounted(() => {
-            showSlides(slideIndex);
-        })
-        const plusSlides = (n) => {
-            showSlides(slideIndex += n);
+        let currentSlide = ref(0);
+        const images = [
+            {id_image: 1, path: "../temp/css/assets/images/user_img/feed-image-1.png"},
+            {id_image: 2, path: "../temp/css/assets/images/user_img/feed-image-2.png"},
+            {id_image: 3, path: "../temp/css/assets/images/user_img/feed-image-3.png"}
+        ];
+        const slideTo = (val) => {
+            currentSlide.value = val
         };
-        
-        const currentSlide = (n) => {
-            showSlides(slideIndex = n);
-        };
-        
-        const showSlides = (n) => {
-            let i;
-            let slides = document.getElementsByClassName("mySlides");
-            let dots = document.getElementsByClassName("demo");
-            if (n > slides.length) {slideIndex = 1}
-            if (n < 1) {slideIndex = slides.length}
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
-            slides[slideIndex-1].style.display = "block";
-            dots[slideIndex-1].className += " active";
-        };
-
+        const getImageUrl = (name) => {
+            return new URL(name, import.meta.url).href
+        }
         const sendEventClose = () => {
-            emit('closeModal', isClose.value);
-        };
-        return {slideIndex, i, plusSlides, currentSlide, showSlides, sendEventClose, isClose};
+            emit('closeModal', false)
+        }
+        return {slideTo, currentSlide, images, getImageUrl, sendEventClose};
     }
 }
 </script>
@@ -218,5 +126,21 @@ export default {
     *.flex {
         @include ab.flex;
     }
+    .column {
+        padding: 0;
+    }
 
+    .carousel__item img{
+        width: 100%;
+        border-radius: 8px;   
+    }
+    li.carousel__slide {
+        padding: 8px;  
+    }
+    #gallery .carousel__track li{
+        padding: 0;
+    }
+    #gallery .carousel__track li:hover, #thumbnails .carousel__track li:hover{
+        cursor: pointer;
+    }
 </style>

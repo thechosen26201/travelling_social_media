@@ -21,40 +21,39 @@
             </div>
             <div id="profile-image" class="profile-image online" @click="userSettingToggle">
                 <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
+
             </div>
         </div>
         <!-- Mobile only -->
-        <!-- <div class="search-box--mobile" @click="toggleSearchMobile">
-            <img src="../temp/css/assets/images/user_img/search.png" alt="">
-        </div> -->
+
         <div class="collapse__button">
             <div class="search-box--mobile" @click="toggleSearchMobile">
                 <img src="../temp/css/assets/images/user_img/search.png" alt="">
             </div>
-            <div @click="toggleSubNavMobile" class="collapse__btn" style="padding: 0.75em">
+            <div class="collapse__btn" style="padding: 0.75em" data-bs-toggle="dropdown">
                 <font-awesome-icon icon="fa-solid fa-bars" />
+                <div class="sub-nav dropdown-menu">
+                    <div class="profile-image online" onclick="UserSettingToggle()">
+                        <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
+                        Xem thông tin cá nhân
+                    </div>
+                    <ul class="navlogo--mobile">
+                        <li><font-awesome-icon icon="fa-solid fa-bell" />Thông báo</li>
+                        <li><font-awesome-icon icon="fa-solid fa-message" />Tin nhắn</li>
+                        <li><font-awesome-icon icon="fa-solid fa-tv" />Xem video</li>
+                        <li>
+                            <RouterLink to="/latest">Latest News</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/location">Location</RouterLink>
+                        </li>
+                        <li @click="logOut">Đăng xuất</li>
+                    </ul>
+                </div>
             </div>
         </div>
         <!-- End mobile-->
 
-        <div class="sub-nav" v-if="this.isShowMobileSubNav">
-            <div class="profile-image online" onclick="UserSettingToggle()">
-                <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
-                Xem thông tin cá nhân
-            </div>
-            <ul class="navlogo--mobile">
-                <li><font-awesome-icon icon="fa-solid fa-bell" />Thông báo</li>
-                <li><font-awesome-icon icon="fa-solid fa-message" />Tin nhắn</li>
-                <li><font-awesome-icon icon="fa-solid fa-tv" />Xem video</li>
-                <li>
-                    <RouterLink to="/latest">Latest News</RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/location">Location</RouterLink>
-                </li>
-                <li @click="logOut">Đăng xuất</li>
-            </ul>
-        </div>
         <div id="user-settings" class="user-settings" :class="'user-setting-showup-toggle'" v-show="isShowUserSettings">
             <div class="profile-darkButton">
                 <div class="user-profile">
@@ -101,7 +100,8 @@
         </div>
     </nav>
     <div class="search-bar-list">
-        <input v-model="searchQuery" type="text" placeholder="Search" class="search--mobile dropdown-toggle" v-if="this.isShowMobileSearch" data-bs-toggle="dropdown">
+        <input v-model="searchQuery" type="text" placeholder="Search" class="search--mobile dropdown-toggle"
+            v-if="this.isShowMobileSearch" data-bs-toggle="dropdown">
         <ul class="dropdown-list dropdown-menu">
             <li v-for="(item) in filteredList" :key="item.id">{{ item.name }}</li>
         </ul>
@@ -112,53 +112,44 @@
         <div class="row">
             <div class="left-sidebar col-sm-4 col-md-3 col-lg-3">
                 <div class="important-links">
-                    <!-- <a href="#"><img src="../temp/css/assets/images/user_img/news.png" alt="">Latest News</a> -->
-                    <RouterLink to="/latest"><img src="../temp/css/assets/images/user_img/news.png" alt="">Latest News
+                    <RouterLink to="#"><img src="../temp/css/assets/images/user_img/news.png" alt="">
+                        Latest News
                     </RouterLink>
-                    <!-- <a href="#"><img src="../temp/css/assets/images/user_img/news.png" alt="">Latest News</a> -->
-                    <RouterLink to="/location"><img src="../temp/css/assets/images/user_img/friends.png" alt="">Location
+                    <RouterLink to="#"><img src="../temp/css/assets/images/user_img/friends.png" alt="">
+                        Friends
                     </RouterLink>
                     <a href="#"><img src="../temp/css/assets/images/user_img/group.png" alt="">Groups</a>
                     <a href="#"><img src="../temp/css/assets/images/user_img/marketplace.png" alt="">marketplace</a>
                     <a href="#"><img src="../temp/css/assets/images/user_img/watch.png" alt="">Watch</a>
                     <a href="#">See More</a>
                 </div>
-    
+
                 <div class="shortcut-links">
                     <p>Your Shortcuts</p>
                     <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-1.png" alt="">Web Developers</a>
                     <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-2.png" alt="">Web Design Course</a>
-                    <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-3.png" alt="">Full Stack Development</a>
+                    <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-3.png" alt="">Full Stack
+                        Development</a>
                     <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-4.png" alt="">Website Experts</a>
                 </div>
             </div>
-    
+
             <!-- main-content------- -->
-    
+
             <div class="content-area col-12 col-sm-8 col-md-9 col-lg-6">
                 <div class="story-gallery">
-                    <div class="story story1">
+                    <!-- <div class="story story1">
                         <img src="../temp/css/assets/images/user_img/upload.png" alt="">
                         <p>Post Story</p>
-                    </div>
-                    <div class="story story2">
-                        <img src="../temp/css/assets/images/user_img/member-1.png" alt="">
-                        <p>Alison</p>
-                    </div>
-                    <div class="story story3">
-                        <img src="../temp/css/assets/images/user_img/member-2.png" alt="">
-                        <p>Jackson</p>
-                    </div>
-                    <div class="story story4">
-                        <img src="../temp/css/assets/images/user_img/member-3.png" alt="">
-                        <p>Samona</p>
-                    </div>
-                    <div class="story story5">
-                        <img src="../temp/css/assets/images/user_img/member-4.png" alt="">
-                        <p>John</p>
+                    </div> -->
+                    <div v-for="item in routerlink" :key="item.id" :class="item.name">
+                        <RouterLink :to="`/${item.name}`"
+                            :class="this.$route.name === item.name ? 'underline-selected' : ''">
+                            {{ item.text }}
+                        </RouterLink>
                     </div>
                 </div>
-    
+
                 <div class="write-post-container">
                     <div class="user-profile">
                         <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
@@ -167,14 +158,15 @@
                             <small>Public <i class="fas fa-caret-down"></i></small>
                         </div>
                     </div>
-    
+
                     <div class="post-upload-textarea">
                         <textarea name="" placeholder="What's on your mind, Alex?" id="" cols="30" rows="3"
                             data-bs-toggle="modal" data-bs-target="#staticBackdrop"></textarea>
                         <div class="add-post-links">
                             <a href="#"><img src="../temp/css/assets/images/user_img/live-video.png" alt="">Live Video</a>
                             <a href="#"><img src="../temp/css/assets/images/user_img/photo.png" alt="">Photo/Video</a>
-                            <a href="#"><img src="../temp/css/assets/images/user_img/feeling.png" alt="">Feeling Activity</a>
+                            <a href="#"><img src="../temp/css/assets/images/user_img/feeling.png" alt="">Feeling
+                                Activity</a>
                         </div>
                     </div>
                     <div class="add-post-links--mobile">
@@ -183,18 +175,18 @@
                         <div><i class="fa-solid fa-face-smile me-1"></i>Feeling Activity</div>
                     </div>
                 </div>
-    
+
                 <RouterView />
-                <button type="button" class="btn-LoadMore" onclick="LoadMoreToggle()">Load More</button>
+                <button type="button" class="btn-LoadMore">Load More</button>
             </div>
-    
+
             <!-- sidebar------------ -->
             <div class="right-sidebar col-lg-3">
                 <div class="heading-link">
                     <h4>Events</h4>
                     <a href="">See All</a>
                 </div>
-    
+
                 <div class="events">
                     <div class="left-event">
                         <h4>13</h4>
@@ -217,7 +209,7 @@
                         <a href="#">More Info</a>
                     </div>
                 </div>
-    
+
                 <div class="heading-link">
                     <h4>Advertisement</h4>
                     <a href="">Close</a>
@@ -225,19 +217,19 @@
                 <div class="advertisement">
                     <img src="../temp/css/assets/images/user_img/advertisement.png" class="advertisement-image" alt="">
                 </div>
-    
+
                 <div class="heading-link">
                     <h4>Conversation</h4>
                     <a href="">Hide Chat</a>
                 </div>
-    
+
                 <div class="online-list">
                     <div class="online">
                         <img src="../temp/css/assets/images/user_img/member-1.png" alt="">
                     </div>
                     <p>Alison Mina</p>
                 </div>
-    
+
                 <div class="online-list">
                     <div class="online">
                         <img src="../temp/css/assets/images/user_img/member-2.png" alt="">
@@ -297,8 +289,11 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 import '@fortawesome/vue-fontawesome';
+import axios from 'axios';
 import { RouterView, RouterLink } from 'vue-router';
-import { getStorage, ref, uploadBytes, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { collection, doc, setDoc, addDoc, getDoc, getDocs } from "firebase/firestore";
+import { db } from '../firebase/index';
 
 export default {
     name: 'UserPage',
@@ -307,20 +302,23 @@ export default {
             isShowMobileSearch: false,
             isShowMobileSubNav: false,
             isShowUserSettings: false,
+            selectedItem: '',
             test_object: {
                 id: 1,
-                name: 'khanh',
-                email: 'khanh@gmail.com',
-                phone: '0385182287',
-                address: 'HaNoi'
             },
+            routerlink: [
+                { id: 1, name: 'latest', text: 'Mới nhất' },
+                { id: 2, name: 'location', text: 'Địa điểm' },
+                { id: 3, name: 'your-post', text: 'Bài đăng của bạn' },
+            ],
             token: '',
             imagesObj: [],
             list_image: [],
             num_of_files: 0,
             searchedList: [],
             searchQuery: '',
-            listData: [{id: 1, name: 'Hà Giang',}, {id: 2, name: 'Hà Nội'}, {id: 3, name: 'TP.HCM'}, {id: 4, name: 'Đà Nẵng'}]
+            listData: [],
+            image_download_url: [],
         }
     },
     methods: {
@@ -353,22 +351,9 @@ export default {
             localStorage.removeItem('token');
             this.$router.push('/');
         },
-        onClickOutside() {
-            window.addEventListener('click', function (e) {
-                try {
-                    if (!document.querySelector('#user-settings').contains(e.target) && !document.querySelector('#profile-image').contains(e.target)) {
-                        console.log(this.isShowUserSettings);
-                        return this.isShowUserSettings = !this.isShowUserSettings;
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
-            })
-        },
 
         addImages() {
             try {
-                // const inputFile = document.querySelector('#file-input');
                 const inputFile = this.$refs['file-input'];
                 inputFile.click();
             } catch (error) {
@@ -388,7 +373,6 @@ export default {
                 this.num_of_files++;
 
             }
-            // console.log(this.imagesObj);                                                
         },
 
         clearInput() {
@@ -412,16 +396,7 @@ export default {
                         (snapshot) => {
                             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                             console.log(`${i.name} is ${progress}% done`);
-                            // switch (snapshot.state) {
-                                // case 'paused':
-                                //     console.log('Upload is paused');
-                                //     break;
-                                // case 'running':
-                                //     console.log('Running');
-                                // case 'success':
-                                //     console.log('File uploaded');
-                                //     break;
-                            // }
+
                         },
                         (error) => {
                             switch (error.code) {
@@ -433,8 +408,19 @@ export default {
                                     break;
                             }
                         },
+                        async () => {
+                            // Upload completed successfully, now we can get the download URL
+                            await getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                                this.image_download_url.push({ path: downloadURL });
+                                setDoc(doc(db, 'KhanhNguyen', 'images'), { path: downloadURL })
+                                // console.log(`File is available at: ${downloadURL}`);
+                            });
+                        }
                     );
-                    // let uploadTask = await this.uploadTaskPromise(storageRef, i);
+
+                    // const colRef = collection(db, 'images');
+                    // const docRef = await addDoc(colRef, this.image_download_url[0]);
+
                 }
             } catch (error) {
                 console.log(error);
@@ -461,6 +447,16 @@ export default {
                 )
             })
         },
+
+        async callApiProvinces() {
+            await axios.get('https://provinces.open-api.vn/api/p/')
+                .then(res => {
+                    this.listData = res.data;
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+        },
         
     },
     created() {
@@ -481,8 +477,8 @@ export default {
 
     computed: {
         filteredList() {
-            if(this.searchQuery){
-                return this.listData.filter((item)=>{
+            if (this.searchQuery) {
+                return this.listData.filter((item) => {
                     // return this.searchQuery.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v))
                     let queryString = this.searchQuery.toLowerCase().trim();
                     return item.name.toLocaleLowerCase().trim().includes(queryString)
@@ -491,14 +487,23 @@ export default {
                 return this.listData;
             }
         }
-    }
+    },
+    mounted() {
+        this.callApiProvinces();
+    },
 }
 </script>
 <style scoped>
 @import url('../temp/css/user.css');
+
+.content-area {
+    margin-top: 0.5em;
+}
+
 a {
     cursor: pointer;
 }
+
 .add-images {
     width: 100%;
 }
@@ -539,13 +544,15 @@ div.card:not(:first-child) {
 }
 
 .dropdown-list {
-    z-index: 1;
+    z-index: 12;
     background-color: #fff;
     width: 100%;
     border-radius: 10px;
     box-shadow: 0px 2px 15px grey;
     list-style-type: none;
     padding: 0;
+    height: 29vh;
+    overflow: overlay;
 }
 
 .dropdown-list li {

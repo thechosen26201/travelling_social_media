@@ -143,7 +143,6 @@ ul.navlogo li img {
   text-decoration: none;
   padding: 10px 30px;
   color: #626262;
-  max-width: 200px;
 }
 
 .important-links a img {
@@ -260,6 +259,30 @@ img.advertisement-image {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+  position: sticky;
+  top: -1px;
+  z-index: 10;
+  background-color: #fff;
+  padding: 0 0.5em;
+  min-height: 1.75em;
+}
+.story-gallery div {
+  position: relative;
+}
+.story-gallery div a {
+  text-decoration: none;
+  color: #000;
+}
+
+.underline-selected::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  bottom: 4px;
+  left: 0;
+  border-radius: 4px;
+  height: 4px;
+  background-color: #1876f2;
 }
 
 .story {
@@ -999,9 +1022,6 @@ img {
   }
   .container {
     margin: 0 !important;
-  }
-  .write-post-container {
-    padding: 20px;
   }
   .sub-nav {
     position: absolute;

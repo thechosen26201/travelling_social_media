@@ -6,17 +6,22 @@ const store = createStore({
     //     auth,
     // },
     state: {
-        authenticated: false
+        isAuthenticated: false
     },
     mutations: {
         SET_AUTH: (state, auth) => {
-            state.authenticated = auth
-        }
+            state.isAuthenticated = auth
+        },
     },
     actions: {
-       setAuth: ({commit}, auth) => {
-        commit('SET_AUTH', auth)
-       }
+        setAuth: ({ commit }, auth) => {
+            commit('SET_AUTH', auth)
+        },
+    },
+    getters: {
+        getAuth: (state) => {
+            return state.isAuthenticated
+        },
     },
     modules: {}
 });

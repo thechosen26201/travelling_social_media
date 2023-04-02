@@ -12,7 +12,10 @@ const router = createRouter({
         {
           path: '/latest',
           name: 'latest',
-          component: () => import('../views/LatestView.vue')
+          component: () => import('../views/LatestView.vue'),
+          meta: {
+            needsAuth: true,
+          },
         },
         {
           path: '/location',
@@ -31,11 +34,7 @@ const router = createRouter({
       name: 'user-register',
       component: () => import('../views/RegisterView.vue')
     },
-    {
-      path: '/admin',
-      name: 'admin',
-      component: () => import('../pages/AdminPage.vue')
-    },
+    
     {
       path: '/profile/:id',
       name: 'UserProfile',
@@ -44,19 +43,19 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../pages/UserProfile.vue')
     },
-    
+
   ]
 });
-router.beforeEach((to, from) => {
-  if (to.name !== 'user-login' && !localStorage.getItem('token')) {
-    return { name: 'user-login' }
-  }
-  else if(to.name === 'user-login' && localStorage.getItem('token')){
-    return {name: 'latest'};
+
+router.beforeEach((to, from, next) => {
+  // if(!store.getters.getAuth && to.meta.needsAuth) {
+  //   next("/");
+  // }
+  if (!localStorage.getItem('token') && to.meta.needsAuth) {
+    next("/");
   }
   else {
-    return;
+    next();
   }
-});
-
+})
 export default router

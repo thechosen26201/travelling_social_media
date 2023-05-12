@@ -8,7 +8,7 @@
                 <div @click="close"><font-awesome-icon icon="fa-solid fa-xmark" class="xmark-icon" /></div>
             </div>
             <div class="dialog__body">
-                Bạn có muốn xóa bình luận này?
+                {{ message }}
             </div>
             <div class="dialog__footer flex">
                 <button type="button" class="btn btn-light" @click="close">Hủy</button>
@@ -19,7 +19,14 @@
 </template>
 <script setup>
 import 'bootstrap/dist/css/bootstrap.css';
+import { onMounted, ref } from 'vue';
+
 const emit = defineEmits(['closeDialog', 'confirmDialog']);
+const props = defineProps(['content']);
+const message = ref('');
+onMounted(() => {
+    message.value = props.content;
+});
 const close = () => {
     emit('closeDialog', false);
 }

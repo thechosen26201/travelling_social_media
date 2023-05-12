@@ -107,8 +107,8 @@
                                     <div class="edit_button" @click="verifyEmail" v-if="!isVerified">
                                         <font-awesome-icon class="exclamation" icon="fa-solid fa-triangle-exclamation" />
                                     </div>
-                                    <div class="edit_button" v-else>
-                                        <font-awesome-icon class="checked" :icon="['fas', 'check']" />
+                                    <div v-else>
+                                        <font-awesome-icon class="checked" :icon="['fas', 'circle-check']"/>
                                     </div>
                                 </div>
                             </div>
@@ -272,7 +272,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 import { RouterLink, useRoute } from 'vue-router';
-import { updateProfile } from "firebase/auth";
+import { updateProfile, sendEmailVerification } from "firebase/auth";
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, uploadBytes, getStorage, ref as storageReference } from "firebase/storage";
 import { ref, onMounted, watchEffect, reactive } from 'vue';
@@ -300,7 +300,15 @@ watchEffect(() => {
         console.log(error);
     }
 })
-
+const verifyEmail = async () => {
+    try {
+        await sendEmailVerification(auth.currentUser);
+        store.dispatch('notify', 'Đã gửi email xác nhận thành công, vui lòng kiểm tra email', 'success', 3000);
+    } catch (error) {
+        store.dispatch('notify', 'Có lỗi xảy ra', 'error', 3000);
+        console.log(error);
+    }
+}
 const validate = (key) => {
     if(!regexVietNamePhoneNumber.test(v_phone.value)) {
         error[key] = 'Số đt không hợp lệ'
@@ -429,7 +437,6 @@ const update_profile = async () => {
             displayName: displayName.value
         });
         store.dispatch('notify', 'Cập nhật thông tin cá nhân thành công', 'success', 3000);
-        console.log('Updated successfully');
     } catch (error) {
         console.log(error);
     }

@@ -73,7 +73,7 @@
             </div>
         </div>
     </div>
-    <DialogMessage v-if="isShowDialog" @closeDialog="closeDialog" @confirmDialog="confirmDialog"/>
+    <DialogMessage v-if="isShowDialog" @closeDialog="closeDialog" @confirmDialog="confirmDialog" :content="'Bạn có muốn xóa bình luận này?'"/>
 </template>
 <script>
 import { ref, onMounted, toRefs, watch, watchEffect, computed } from 'vue';

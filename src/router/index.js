@@ -103,6 +103,7 @@ router.beforeEach((to, from, next) => {
         else {
           console.log("Vui lòng sử dụng đúng tài khoản của người dùng");
           store.dispatch('logOut');
+          return
         }
       })
       .catch(error => {

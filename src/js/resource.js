@@ -3,5 +3,6 @@ export default function resource() {
     const PASSWORD = 'Mật khẩu';
     const FIRST_NAME = 'Họ';
     const LAST_NAME = 'Tên';
-    return {EMAIL, PASSWORD, FIRST_NAME, LAST_NAME};
+    const POSTS = 'news', DESTINATIONS = 'destinations', USERS = 'users';
+    return {EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, POSTS, DESTINATIONS, USERS};
 }

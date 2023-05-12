@@ -55,6 +55,9 @@
             </div>
         </div>
     </div>
+    <DialogMessage v-if="isShowDialog" 
+        @closeDialog="closeDialog" :content="'Bạn có muốn xóa bài viết này?'" 
+        @confirmDialog="confirmDialog"/>
 </template>
 <script>
 import { onMounted, onBeforeMount, ref, watchEffect } from 'vue';
@@ -67,19 +70,21 @@ import store from '../store/store';
 import { uuid } from 'vue3-uuid';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import DialogMessage from '../components/DialogMessage.vue';
+import resource from '../js/resource';
 
 export default {
     name: 'LatestView',
-    components: { CommentBlock, Slider },
+    components: { CommentBlock, Slider, DialogMessage },
     setup(props, {emit}) {
         const comment = ref('');
         const listPost = ref([]);
-        const currentSlide = ref(0);
         const uid = ref(null);
         const commentArray = ref([]);
         const isShowPostOptions = ref(false);
-        const lastVisible = ref('');
-
+        const isShowDialog = ref(false);
+        const postID = ref(''); 
+        const {POSTS, DESTINATIONS, USERS} = resource();
         // router.addRoute({ path: '/location', component: () => import('./LocationView.vue'), })
         // router.replace(router.currentRoute.value.fullPath);
         
@@ -103,12 +108,25 @@ export default {
             isShowPostOptions.value = true;
         };
         const deletePost = (post_id) => {
-            const docRef = doc(db, 'news', post_id);
-            deleteDoc(docRef)
-            .then(() => notify('Xóa post thành công', 'success'))
-            .catch((error) => notify('Có lỗi xảy ra', 'error'))
-            .finally(console.log('Xóa thành công'))
+            postID.value = post_id;
+            isShowDialog.value = true;
         };
+        const confirmDialog = async () => {
+            try {
+                const docRef = doc(db, POSTS, postID.value);
+                await deleteDoc(docRef);
+                listPost.value = listPost.value.filter(post => post.id !== postID.value);
+                notify('Xóa post thành công', 'success')
+            } catch (error) {
+                console.log(error);
+                notify('Có lỗi xảy ra', 'error')
+            } 
+            finally {
+                postID.value = '';
+                console.log('Completed');
+            }
+        }
+        const closeDialog = (closeDialog) => {isShowDialog.value = closeDialog};
         const convertTimestampToDate = (time) => {
             //time should be server timestamp seconds only
             let date = time.toDate();
@@ -133,9 +151,6 @@ export default {
                 type: type
             });
         }
-        const slideTo = (val) => {
-            currentSlide.value = val
-        };
         const toggleReaction = async (id, index) => {
             try {
                 const reaction_obj = { uid: await getCurrentUserId() };
@@ -145,13 +160,13 @@ export default {
                         const result = listPost.value[index]['reactions'].some(elem => { return elem.uid === reaction_obj.uid });
                         if (!result) {
                             listPost.value[index]['reactions'].push(reaction_obj);
-                            const update = await updateDoc(doc(db, "news", id), {
+                            const update = await updateDoc(doc(db, POSTS, id), {
                                 reactions: listPost.value[index]['reactions'],
                             });
                         }
                         else {
                             listPost.value[index]['reactions'] = listPost.value[index]['reactions'].filter(elem => elem.uid !== reaction_obj.uid)
-                            const update = await updateDoc(doc(db, "news", id), {
+                            const update = await updateDoc(doc(db, POSTS, id), {
                                 reactions: listPost.value[index]['reactions'],
                             });
                         }
@@ -190,7 +205,7 @@ export default {
                 }
             }
             try {
-                await updateDoc(doc(db, "news", id), {
+                await updateDoc(doc(db, POSTS, id), {
                     comments: t,
                 });
             } catch (error) {
@@ -200,7 +215,7 @@ export default {
         };
         const addReplyComment = async (id, index) => {
             try {
-                await updateDoc(doc(db, "news", id), {
+                await updateDoc(doc(db, POSTS, id), {
                     comments: arrayUnion(store.getters.getReply)
                 });
             } catch (error) {
@@ -215,7 +230,7 @@ export default {
             const filtered_comment = listPost.value[index]['comments'].filter(comment => comment.id !== delete_id);
             const filtered_children = filtered_comment.filter(comment => comment.pID !== delete_id);
             try {
-                await updateDoc(doc(db, "news", id), {
+                await updateDoc(doc(db, POSTS, id), {
                     comments: filtered_children,
                 });
             } catch (error) {
@@ -226,7 +241,7 @@ export default {
 
         const postComment = async (post_id, index) => {
             const generated_id = uuid.v4();
-            await updateDoc(doc(db, "news", post_id), {
+            await updateDoc(doc(db, POSTS, post_id), {
                 comments: arrayUnion({ user_id: uid.value, id: generated_id, text: comment.value, created_date: Date.now() })
             });
             listPost.value[index]['comments'].push({ user_id: uid.value, id: generated_id, text: comment.value, created_date: Date.now() })
@@ -244,12 +259,12 @@ export default {
         const fetchPost = async (number = 1) => {
             // let q;
             // if(lastVisible.value) {
-            //     q = query(collection(db, "news"), where("isApproved", "==", true), orderBy('created_date'), startAfter(lastVisible.value), limit(number));
+            //     q = query(collection(db, POSTS), where("isApproved", "==", true), orderBy('created_date'), startAfter(lastVisible.value), limit(number));
             // }
             // else {
-            //     q = query(collection(db, "news"), where("isApproved", "==", true), orderBy('created_date'), limit(number));
+            //     q = query(collection(db, POSTS), where("isApproved", "==", true), orderBy('created_date'), limit(number));
             // }
-            const q = query(collection(db, "news"), where("isApproved", "==", true), orderBy('created_date'));
+            const q = query(collection(db, POSTS), where("isApproved", "==", true), orderBy('created_date'));
             const querySnapshot = await getDocs(q);
             let i = 0;
             querySnapshot.forEach((doc) => {
@@ -261,16 +276,17 @@ export default {
                     // i++;
                 })
             });
-            lastVisible.value = querySnapshot.docs[querySnapshot.docs.length-1];
-            console.log("last", lastVisible);
+            // lastVisible.value = querySnapshot.docs[querySnapshot.docs.length-1];
+            // console.log("last", lastVisible);
             
         }
         
         return {
-             comment, postComment,
+            comment, postComment,
             listPost, getImageUrl, fetchPost, addReplyComment, deleteComment, editComment,
             toggleReaction, setLikeButton, commentArray, toggleCommentBlock, getPostInfo, 
-            convertTimestampToDate, openPostOptions, isShowPostOptions, deletePost, uid
+            convertTimestampToDate, openPostOptions, isShowPostOptions, deletePost, uid, isShowDialog,
+            closeDialog, confirmDialog
         };
     }
 }

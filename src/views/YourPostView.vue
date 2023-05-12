@@ -1,5 +1,8 @@
 <template>
-    <div class="status-field-container write-post-container" v-for="(post, index) in listPost" :key="post.id">
+    <div v-if="listPost.length <= 0" class="text-center">
+        Bạn chưa đăng bài viết nào
+    </div>
+    <div class="status-field-container write-post-container" v-else v-for="(post, index) in listPost" :key="post.id">
         <div class="user-profile-box">
             <div class="user-profile">
                 <img :src="getImageUrl(post.photoURL)" alt="">
@@ -17,24 +20,7 @@
 
             <div class="sub-blog__post" v-if="post['images'].length > 0">
                 <div class="sub-blog__post-slider">
-                    <Carousel id="gallery" :items-to-show="1" :wrap-around="false" v-model="currentSlide">
-                        <Slide v-for="(slide, index) in post['images']" :key="slide">
-                            <div class="carousel__item">
-                                <img :src="getImageUrl(slide)">
-                            </div>
-                        </Slide>
-                        <template #addons>
-                            <Navigation />
-                        </template>
-                    </Carousel>
-
-                    <Carousel id="thumbnails" :items-to-show="4" :wrap-around="true" v-model="currentSlide" ref="carousel">
-                        <Slide v-for="(slide, index) in post['images']" :key="slide">
-                            <div class="carousel__item" @click="slideTo(index + 1 - 1)">
-                                <img :src="getImageUrl(slide)">
-                            </div>
-                        </Slide>
-                    </Carousel>
+                    <Slider :post="post['images']"/>
                 </div>
             </div>
         </div>
@@ -73,84 +59,128 @@
     </div>
 </template>
 <script>
+import { onMounted, ref} from 'vue';
 import CommentBlock from '../components/CommentBlock.vue';
-import { Carousel, Slide, Navigation } from 'vue3-carousel';
-import 'vue3-carousel/dist/carousel.css';
-import { watch, onMounted ,ref } from 'vue';
-import { collection, query, where, getDocs, doc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
+import Slider from '../components/Slider.vue';
+import { collection, doc, getDoc, getDocs, updateDoc, arrayUnion, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from '@firebase/auth';
-import { db, auth } from '../firebase';
+import { db, auth } from '../firebase/index';
+import store from '../store/store';
 import { uuid } from 'vue3-uuid';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
-import store from '../store/store';
 
 export default {
-    name: 'location',
-    components: { CommentBlock, Carousel, Slide, Navigation },
-    props: ['code'],
-    setup(props, { emit }) {
+    name: 'LatestView',
+    components: { CommentBlock, Slider},
+    setup() {
         const comment = ref('');
-        const total = ref([]);
-        const totalComment = ref([]);
         const listPost = ref([]);
         const currentSlide = ref(0);
         const uid = ref(null);
+        const commentArray = ref([]);
+        const isShowPostOptions = ref(false);
 
+        // router.addRoute({ path: '/location', component: () => import('./LocationView.vue'), })
+        // router.replace(router.currentRoute.value.fullPath);
+
+        const openPostOptions = (event) => {
+            event.stopPropagation();
+            isShowPostOptions.value = true;
+        };
+        const deletePost = (post_id) => {
+            const docRef = doc(db, 'news', post_id);
+            deleteDoc(docRef)
+            .then(() => notify('Xóa post thành công', 'success'))
+            .catch((error) => notify('Có lỗi xảy ra', 'error'))
+            .finally(console.log('Xóa thành công'))
+        };
+        const convertTimestampToDate = (time) => {
+            //time should be server timestamp seconds only
+            let date = time.toDate();
+            let mm = date.getMonth();
+            let dd = date.getDate();
+            let yyyy = date.getFullYear();
+
+            date = dd + '/' + mm + '/' + yyyy + ' ' + date.toLocaleTimeString();
+            return date;
+        }
+        const toggleCommentBlock = (array_comment, isInclude) => {
+            if(isInclude) {
+                commentArray.value = commentArray.value.filter(item => item !== array_comment)
+            }
+            else {
+                commentArray.value.push(array_comment);
+            }
+        };
         const notify = (message, type) => {
             toast(message, {
                 autoClose: 3000,
                 type: type
             });
         }
+        const slideTo = (val) => {
+            currentSlide.value = val
+        };
+        const toggleReaction = async (id, index) => {
+            try {
+                const reaction_obj = { uid: await getCurrentUserId() };
+                const promises = [reaction_obj];
+                Promise.all(promises)
+                    .then(async() => {
+                        const result = listPost.value[index]['reactions'].some(elem => { return elem.uid === reaction_obj.uid });
+                        if (!result) {
+                            listPost.value[index]['reactions'].push(reaction_obj);
+                            const update = await updateDoc(doc(db, "news", id), {
+                                reactions: listPost.value[index]['reactions'],
+                            });
+                        }
+                        else {
+                            listPost.value[index]['reactions'] = listPost.value[index]['reactions'].filter(elem => elem.uid !== reaction_obj.uid)
+                            const update = await updateDoc(doc(db, "news", id), {
+                                reactions: listPost.value[index]['reactions'],
+                            });
+                        }
+                    })
+            } catch (error) {
+                console.log(error);
+            } finally {
+                console.log('React thành công');
+            }
+        };
+
+        const setLikeButton = (array_reaction) => {
+            try {
+                let result = array_reaction.some(item => {
+                    return item.uid === uid.value
+                })
+                return result;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const getCurrentUserId = async () => {
+            await store.dispatch('setUser');
+            return await store.getters.getUser.uid;
+        };
+        
         onMounted(() => {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     uid.value = user.uid;
                 }
+            });
+            document.getElementById("app").addEventListener('click', () => {
+                isShowPostOptions.value = false
             })
         })
-        watch(() => props.code, (code) => {
-            console.log(code);
-            fetchPost()
-        });
-        const setLikeButton = (array_reaction) => {
-            let result = array_reaction.some(item => {
-                return item.uid === uid.value
-            })
-            return result;
-        }
-        const getPostInfo = async (user_id) => {
-            const docRef = doc(db, "users", user_id);
-            const docSnap = await getDoc(docRef);
-            return docSnap.data();
-        };
-        const fetchPost = onMounted(async () => {
-            const q = query(collection(db, "news"), where("location_code", "==", Number(props.code)), where('isApproved', '==', true));
-            const querySnapshot = await getDocs(q);
-            // listPost.value.length = 0;
-            let i = 0;
-            querySnapshot.forEach((doc) => {
-                const id = doc.data().user_id;
-                let res = getPostInfo(id);
-                res.then(result => {return result})
-                .then(obj => {
-                    listPost.value[i] = { id: doc.id, ...obj ,...doc.data()};
-                    i++;
-                })
-            });
-        });
-
-        const slideTo = (val) => {
-            currentSlide.value = val
-        };
 
         const editComment = async (id, index) => {
             const edit_obj = store.getters.getEdit;
             const t = listPost.value[index]['comments'];
 
             for (const iterator of t) {
-                if(iterator.id === edit_obj.id) {
+                if (iterator.id === edit_obj.id) {
                     iterator.text = edit_obj.text;
                 }
             }
@@ -192,20 +222,46 @@ export default {
         const postComment = async (post_id, index) => {
             const generated_id = uuid.v4();
             await updateDoc(doc(db, "news", post_id), {
-                comments: arrayUnion({ accound_id: "99", id: generated_id, text: comment.value, created_date: Date.now() })
+                comments: arrayUnion({ user_id: uid.value, id: generated_id, text: comment.value, created_date: Date.now() })
             });
-            listPost.value[index]['comments'].push({ accound_id: "99", id: generated_id, text: comment.value, created_date: Date.now() })
+            listPost.value[index]['comments'].push({ user_id: uid.value, id: generated_id, text: comment.value, created_date: Date.now() })
             comment.value = '';
-            // totalComment.value[index] += 1;
         };
 
         const getImageUrl = (name) => {
             return new URL(name, import.meta.url).href
         }
+        const getPostInfo = async (user_id) => {
+            const docRef = doc(db, "users", user_id);
+            const docSnap = await getDoc(docRef);
+            return docSnap.data();
+        };
+        const fetchPost = onMounted(async () => {
+            try {
+                await store.dispatch('setUser');
+                const uid = store.getters.getUser.uid;
+                const q = query(collection(db, "news"), where("isApproved", "==", true), where("user_id", "==", uid));
+                const querySnapshot = await getDocs(q);
+                let i = 0;
+                querySnapshot.forEach((doc) => {
+                    const id = doc.data().user_id;
+                    let res = getPostInfo(id);
+                    res.then(result => {return result})
+                    .then(obj => {
+                        listPost.value[i] = { id: doc.id, ...obj ,...doc.data()};
+                        i++;
+                    }) 
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        })
+
         return {
             slideTo, currentSlide, comment, postComment,
-            listPost, getImageUrl, total,
-            totalComment, fetchPost, addReplyComment, deleteComment,editComment, setLikeButton
+            listPost, getImageUrl,
+            fetchPost, addReplyComment, deleteComment, editComment,
+            toggleReaction, setLikeButton, commentArray, toggleCommentBlock, getPostInfo
         };
     }
 }
@@ -255,7 +311,4 @@ export default {
     cursor: pointer;
 }
 
-/* #gallery .carousel__viewport .carousel__item img {
-    
-} */
 </style>

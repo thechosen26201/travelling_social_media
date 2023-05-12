@@ -13,17 +13,17 @@
             <form class="right-side col-12 col-lg-6" @submit.prevent="handleSubmit">
                 <div class="container">
                     <div class="row">
-                        <div class="col-6 p-0"><InputBase :type="'text'" :placeholder="'Họ'" @sendString="sendString"/></div>
-                        <div class="col-6 ps-1 pe-0"><InputBase :type="'text'" :placeholder="'Tên'" @sendString="sendString"/></div>
+                        <div class="col-6 p-0"><InputBase :reference="'last_name'" :type="'text'" :placeholder="'Họ'" @sendString="sendString"/></div>
+                        <div class="col-6 ps-1 pe-0"><InputBase :reference="'first_name'" :type="'text'" :placeholder="'Tên'" @sendString="sendString"/></div>
                     </div>
                 </div>
-                <InputBase :type="'text'" :placeholder="'Email'" @sendString="sendString"/>
-                <InputBase :type="'password'" :placeholder="'Mật khẩu'" @sendString="sendString"/>
+                <InputBase :reference="'Email'" :type="'text'" :placeholder="'Email'" @sendString="sendString"/>
+                <InputBase :reference="'Password'" :type="'password'" :placeholder="'Mật khẩu'" @sendString="sendString"/>
                 <!-- <input type="text" class="form-input form-control" placeholder="Email" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                 <input type="password" class="form-input form-control" placeholder="Mật khẩu" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"> -->
                 <!-- <InputBase :type="'text'" :placeholder="'Nhập lại mật khẩu'"/>
                 <InputBase :type="'date'" :placeholder="'Ngày sinh'"/> -->
-                <button type="submit" class="sign-up-btn form-btn btn btn-success">Đăng ký</button>
+                <button type="submit" class="sign-up-btn form-btn btn btn-success" :disabled="!isValid && Object.keys(data).length !== 0">Đăng ký</button>
                 <button type="button" class="sign-in-btn form-btn btn btn-primary" @click="moveToLogin">Đã có tài khoản? Đăng nhập ngay</button>
             </form>
         </div>
@@ -34,28 +34,21 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 import InputBase from '../components/InputBase.vue';
 import {useRouter} from 'vue-router';
-// import {useStore} from 'vuex';
-import {reactive, ref} from 'vue';
-// import {SIGNUP_ACTION} from '../store/storeconstants';
-import axios from 'axios';
+import {reactive, ref, onMounted} from 'vue';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import 'vue3-toastify/dist/index.css';
+import { toast } from 'vue3-toastify';
+import { setDoc, doc, Timestamp } from '@firebase/firestore';
+import { db } from '../firebase';
+
 export default {
     components: {InputBase},
     setup() {
-        // const store = useStore();
-        // const action = () => {
-        //     store.dispatch('auth', {
-        //         signup: SIGNUP_ACTION
-        //     })
-        // };
-        
-        const data = reactive({
-            // firstName: '',
-            // lastName: '',
-            // email: '',
-            // password: ''
-        });
+        const data = reactive({ });
         const isValid = ref(true);
         const router = useRouter();
+        const auth = getAuth();
+        
         const moveToLogin = () => {
             router.push('/');
         }
@@ -63,37 +56,61 @@ export default {
             let obj = Object.assign({}, sendString);
             if(obj['type'] === 'Họ' && obj['condition']) {
                 data.lastName = obj['value'];
+                isValid.value = true;
             }
             else if (obj['type'] === 'Tên' && obj['condition']) {
                 data.firstName = obj['value'];
+                isValid.value = true;
             }
             else if (obj['type'] === 'Email' && obj['condition']) {
                 data.email = obj['value'];
+                isValid.value = true;
             }
             else if (obj['type'] === 'Mật khẩu' && obj['condition']) {
                 data.password = obj['value'];
+                isValid.value = true;
             }
             else {
                 isValid.value = false;
             }
         }
-        const handleSubmit = () => {
-
-            if (isValid.value && Object.keys(data).length !== 0) {
-                data.returnSecureToken = true;
-                console.log(data);
-                axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDT5wm4oPfy7gUnuLQSQrWf-0Hyg0lR28U`, data)
-                .then((response) => {
-                    console.log(response);
-                })
-                .catch(e => {
-                    console.log(e);
-                })
-            } else {
-                alert('Vui long kiem tra lai');
-            } 
+        const handleSubmit = async () => {   
+            try {
+                if (isValid.value && Object.keys(data).length !== 0) {
+                    const response = await createUserWithEmailAndPassword(auth, data.email, data.password);
+                    // Cập nhật lại tên
+                    await updateProfile(auth.currentUser, {
+                        displayName: data.firstName,
+                    });
+                    await setDoc(doc(db, "users", auth.currentUser.uid), {
+                        firstName: data.firstName,
+                        lastName: data.lastName,
+                        displayName: data.firstName,
+                        email: auth.currentUser.email,        
+                        emailVerified: false,
+                        photoURL: null,
+                        phoneNumber: auth.currentUser.phoneNumber,
+                        role: 1,
+                        created_at: Timestamp.fromDate(new Date()),
+                    });
+                    console.log(auth.currentUser);
+                    notify('Đăng ký tài khoản mới thành công', 'success', 3000);
+                    return response;
+                } else {
+                    throw new Error('Vui lòng kiểm tra lại các trường !');
+                } 
+            } catch (error) {
+                // console.log(error.message);
+                notify(error.message, 'error', 3000);
+            }         
+        };
+        const notify = (message, type, duration) => {
+            toast(message, {
+                autoClose: duration,
+                type: type
+            });
         }
-        return {router, moveToLogin, sendString, handleSubmit}
+        return {router, moveToLogin, sendString, handleSubmit, isValid, data}
     }
 }
 </script>

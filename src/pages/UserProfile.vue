@@ -5,8 +5,10 @@
                 <div class="col">
                     <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                         <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><RouterLink to="/home">Home</RouterLink></li>
-                            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                            <li class="breadcrumb-item">
+                                <RouterLink to="/latest">Trang chủ</RouterLink>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Hồ sơ cá nhân</li>
                         </ol>
                     </nav>
                 </div>
@@ -16,9 +18,18 @@
                 <div class="col-lg-4">
                     <div class="card mb-4">
                         <div class="card-body text-center">
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
-                                alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
-                            <h5 class="my-3">John Smith</h5>
+                            <div class="user-avatar" @click="selectImg">
+                                <img :src="photo_link" alt="avatar" class="rounded-circle img-fluid"
+                                    style="width: 150px;">
+                                <input ref="inputFile" id="inputFile" type="file" name="" hidden @change="changeImg">
+                            </div>
+                            <!-- Display name -->
+                            <h5 class="my-3">{{ displayName }} </h5>
+                            <input @click="keepActive" v-if="showEditDisplayName" type="text" class="form-control input-edit display-name"
+                                        placeholder="Nhập tên hiển thị mới" aria-label="Username" aria-describedby="basic-addon1" v-model="displayName">
+                            <div class="edit_button" @click="openEditInput(2, $event)">
+                                <font-awesome-icon icon="fa-solid fa-pen" />
+                            </div> 
                             <p class="text-muted mb-1">Full Stack Developer</p>
                             <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
                             <div class="d-flex justify-content-center mb-2">
@@ -58,11 +69,30 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0">Full Name</p>
+                                <div class="col-sm-3 flex editable">
+                                    <p class="mb-0">Họ </p>
                                 </div>
-                                <div class="col-sm-9">
-                                    <p class="text-muted mb-0">Johnatan Smith</p>
+                                <div class="col-sm-9 flex editable">
+                                    <p class="text-muted mb-0">{{ v_lname }}</p>
+                                    <input @click="keepActive" v-if="showEditLastName" type="text" class="form-control input-edit"
+                                        placeholder="Nhập họ" aria-label="Username" aria-describedby="basic-addon1" v-model="v_lname">
+                                    <div class="edit_button" @click="openEditInput(0, $event)">
+                                        <font-awesome-icon icon="fa-solid fa-pen" />
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3 flex editable">
+                                    <p class="mb-0">Tên</p>
+                                </div>
+                                <div class="col-sm-9 flex editable">
+                                    <p class="text-muted mb-0">{{ v_fname }}</p>
+                                    <input @click="keepActive" v-if="showEditFirstName" type="text" class="form-control input-edit"
+                                        placeholder="Nhập tên" aria-label="Username" aria-describedby="basic-addon1" v-model="v_fname">
+                                    <div class="edit_button" @click="openEditInput(1, $event)">
+                                        <font-awesome-icon icon="fa-solid fa-pen" />
+                                    </div>
                                 </div>
                             </div>
                             <hr>
@@ -70,35 +100,38 @@
                                 <div class="col-sm-3">
                                     <p class="mb-0">Email</p>
                                 </div>
-                                <div class="col-sm-9">
-                                    <p class="text-muted mb-0">example@example.com</p>
+                                <div class="col-sm-9 flex editable">
+                                    <p class="text-muted mb-0">{{ v_email }}</p>
+                                    <!-- <input @click="keepActive" v-if="showEditDisplayName" type="text" class="form-control input-edit"
+                                        placeholder="Nhập email" aria-label="Username" aria-describedby="basic-addon1" v-model="v_email"> -->
+                                    <div class="edit_button" @click="verifyEmail" v-if="!isVerified">
+                                        <font-awesome-icon class="exclamation" icon="fa-solid fa-triangle-exclamation" />
+                                    </div>
+                                    <div class="edit_button" v-else>
+                                        <font-awesome-icon class="checked" :icon="['fas', 'check']" />
+                                    </div>
                                 </div>
                             </div>
                             <hr>
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <p class="mb-0">Phone</p>
+                                    <p class="mb-0">Di động</p>
                                 </div>
-                                <div class="col-sm-9">
-                                    <p class="text-muted mb-0">(097) 234-5678</p>
+                                <div class="col-sm-9 flex editable">
+                                    <p class="text-muted mb-0">{{ v_phone }}</p>
+                                    <input @click="keepActive" v-if="showEditPhone" type="text" class="form-control input-edit"
+                                        placeholder="Nhập số điện thoại" aria-label="Username"
+                                        aria-describedby="basic-addon1" v-model="v_phone" maxlength="10" @keydown="validate('phone')">
+                                    <div class="edit_button" @click="openEditInput(3, $event)">
+                                        <font-awesome-icon icon="fa-solid fa-pen" />
+                                    </div>
                                 </div>
+                                <p class="error text-danger m-0" v-if="error['phone']">SĐT không hợp lệ</p>
                             </div>
                             <hr>
                             <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0">Mobile</p>
-                                </div>
-                                <div class="col-sm-9">
-                                    <p class="text-muted mb-0">(098) 765-4321</p>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <p class="mb-0">Address</p>
-                                </div>
-                                <div class="col-sm-9">
-                                    <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+                                <div class="col-sm-12">
+                                    <button class="btn btn-primary" type="button" @click="update_profile">Cập nhật thông tin</button>
                                 </div>
                             </div>
                         </div>
@@ -178,13 +211,229 @@
         </div>
     </section>
 </template>
-
-<script>
-    import 'bootstrap/dist/css/bootstrap.css';
-    import 'bootstrap/dist/js/bootstrap.bundle.js';
-    import { RouterLink} from 'vue-router';
-
-    export default {
-        name: 'UserProfile'
+<style lang="scss" scoped>
+@use '../temp/css/abstracts/' as ab;
+.exclamation {
+    color: ab.$danger-color;
+}
+.checked {
+    color: ab.$success-color;
+}
+.flex {
+    display: flex;
+}
+.edit_button {
+    &:hover {
+        cursor: pointer;
+        opacity: 0.6;
     }
+}
+.editable {
+    justify-content: space-between;
+    position: relative;
+}
+
+.input-edit {
+    position: absolute;
+    top: -0.4em;
+    max-width: 85%;
+    &.display-name {
+        top: 47%;
+        left: 10%;
+    }
+}
+
+.img-fluid {
+    height: 150px;
+}
+
+.user-avatar {
+    display: inline-block;
+    position: relative;
+    min-width: 150px;
+}
+
+.user-avatar:hover::after {
+    content: "Đổi ảnh";
+    background-color: #000;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    height: 100%;
+    opacity: 0.5;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #fff;
+    line-height: 150px;
+    cursor: pointer;
+}
+</style>
+<script setup>
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.bundle.js';
+import { RouterLink, useRoute } from 'vue-router';
+import { updateProfile } from "firebase/auth";
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { getDownloadURL, uploadBytes, getStorage, ref as storageReference } from "firebase/storage";
+import { ref, onMounted, watchEffect, reactive } from 'vue';
+import { db, auth } from '../firebase';
+import regex from '../js/regex';
+import 'vue3-toastify/dist/index.css';
+import store from '../store/store';
+
+const route = useRoute();
+const uid = ref(route.params.id);
+const showEditDisplayName = ref(false), showEditFirstName = ref(false), showEditPhone = ref(false), showEditLastName = ref(false);
+const v_email = ref(''), v_fname = ref(''), v_lname = ref(''), v_phone = ref(''), photo_link = ref(''), displayName = ref('');
+const {regexNumberOnly, regexVietNamePhoneNumber} = regex(); 
+const error = reactive({});
+const isVerified = ref(false);
+
+watchEffect(() => {
+    try {
+        if (v_phone.value) {
+            if(!regexNumberOnly.test(v_phone.value)) {
+                v_phone.value = v_phone.value.replace(/[a-zA-Z]/g, '');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+const validate = (key) => {
+    if(!regexVietNamePhoneNumber.test(v_phone.value)) {
+        error[key] = 'Số đt không hợp lệ'
+    }
+    else {
+        error[key] = ''
+    }
+};
+const keepActive = (event) => {
+    event.stopPropagation();
+} 
+const openEditInput = (type, event) => {
+    switch (type) {
+        case 0: // Họ
+            event.stopPropagation();
+            showEditLastName.value = true;
+            showEditDisplayName.value = false;
+            showEditPhone.value = false;
+            showEditFirstName.value = false;
+            break;
+        case 1:
+            event.stopPropagation();
+            showEditFirstName.value = true;
+            showEditLastName.value = false;
+            showEditDisplayName.value = false;
+            showEditPhone.value = false;
+            break;
+        case 2:
+            event.stopPropagation();
+            showEditFirstName.value = false;
+            showEditLastName.value = false;
+            showEditDisplayName.value = true;
+            showEditPhone.value = false;
+            break;
+        case 3:
+            event.stopPropagation();
+            showEditFirstName.value = false;
+            showEditLastName.value = false;
+            showEditDisplayName.value = false;
+            showEditPhone.value = true;
+            break;
+        default:
+            break;
+    }
+}
+const selectImg = () => {
+    try {
+        const inputFile = document.getElementById('inputFile');
+        inputFile.click();
+    } catch (error) {
+        console.log(error);
+    }
+}
+const changeImg = async (e) => {
+    const storage = getStorage();
+    // const files = document.getElementById('inputFile');
+    let file = e.target.files[0];
+    const storageRef = storageReference(storage, `${uid.value}/avatar/${file.name}`);
+    const res = uploadBytes(storageRef, file);
+    res.then(result => {
+        return result.ref;
+    })
+        .then(resultRef => {
+            return getDownloadURL(resultRef);
+        })
+        .then(link => {
+            const docRef = doc(db, 'users', uid.value)
+            const db_res = updateDoc(docRef, {
+                photoURL: link
+            });
+            const server_res = updateProfile(auth.currentUser, {
+                photoURL: link
+            });
+            return [db_res, server_res];
+        })
+        .then(async update_res => {
+            console.log(await Promise.all(update_res));
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    // console.log(e.target.files[0]);
+
+    // const link = await getDownloadURL(storageRef)
+    // console.log(link);
+}
+onMounted(async () => {
+    try {
+        const docRef = doc(db, "users", uid.value);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+            // user_profile.value = docSnap.data();
+            v_email.value = docSnap.data().email;
+            v_lname.value = docSnap.data().lastName;
+            v_fname.value = docSnap.data().firstName;
+            v_phone.value = docSnap.data().phoneNumber;
+            photo_link.value = docSnap.data().photoURL;
+            displayName.value = docSnap.data().displayName;
+            isVerified.value = docSnap.data().emailVerified;
+
+        } else {
+            console.log("No such document!");
+        }
+        document.getElementById('app').addEventListener('click', () => {
+            showEditDisplayName.value = false;
+            showEditFirstName.value = false;
+            showEditLastName.value = false;
+            showEditPhone.value = false;
+        });
+    } catch (error) {
+        console.log(error);
+    }
+    
+});
+const update_profile = async () => {
+    try {
+        await updateDoc(doc(db, "users", uid.value), {
+            firstName: v_fname.value,
+            lastName: v_lname.value,
+            // email: v_email.value,
+            phoneNumber: v_phone.value,
+            displayName: displayName.value
+        });
+        await updateProfile(auth.currentUser, {
+            displayName: displayName.value
+        });
+        store.dispatch('notify', 'Cập nhật thông tin cá nhân thành công', 'success', 3000);
+        console.log('Updated successfully');
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 </script>

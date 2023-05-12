@@ -5,7 +5,7 @@
   --bg-color: #fff;
 }
 
-.dark-theme {
+.bg-dark {
   --body-color: #0a0a0a;
   --nav-color: #000;
   --bg-color: #000;
@@ -13,7 +13,7 @@
 
 body {
   background: var(--body-color);
-  transition: background 0.3s;
+  transition: background 0.2s linear;
 }
 
 nav.navbar {
@@ -51,6 +51,7 @@ ul.navlogo li img {
 
 .profile-image img {
   width: 40px;
+  height: 40px;
   border-radius: 100%;
 }
 
@@ -117,7 +118,6 @@ ul.navlogo li img {
   position: sticky;
   top: 50px;
   align-self: flex-start;
-  background: var(--bg-color);
   border-radius: 4px;
   padding: 20px;
   color: #626262;
@@ -262,7 +262,6 @@ img.advertisement-image {
   position: sticky;
   top: -1px;
   z-index: 10;
-  background-color: #fff;
   padding: 0 0.5em;
   min-height: 1.75em;
 }
@@ -344,7 +343,6 @@ img.advertisement-image {
 
 .write-post-container {
   color: #626262;
-  background-color: var(--bg-color);
   width: 100%;
   padding: 0.5em;
   border-radius: 6px;
@@ -352,11 +350,11 @@ img.advertisement-image {
 
 .user-profile {
   display: flex;
-  align-items: center;
 }
 
 .user-profile img {
-  width: 45px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   margin-right: 10px;
 }
@@ -409,6 +407,7 @@ img.advertisement-image {
   width: 100%;
   margin-top: 15px;
   border-radius: 6px;
+  height: 100%;
 }
 
 .status-field p {
@@ -431,6 +430,10 @@ img.advertisement-image {
 .activity-icons div img {
   width: 18px;
   margin-right: 10px;
+}
+.activity-icons div img:hover {
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #ccc;
 }
 
 .post-reaction {
@@ -800,6 +803,8 @@ ul.navlogo {
   transform: translate(-50%, -50%);
   padding: 0 15px 15px;
   transition: mask-position 0.3s, -webkit-mask-position 0.3s;
+  box-shadow: 1px 1px 7px gray;
+  border-radius: 0.5em;
 }
 .sub-blog .scrollable {
   overflow-y: auto;
@@ -1117,9 +1122,6 @@ img {
   }
   .search-box input {
     width: 10rem;
-  }
-  .content-area {
-    flex-basis: 60%;
   }
 }
 /*medium Tablet*/

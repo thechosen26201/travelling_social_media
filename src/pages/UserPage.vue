@@ -3,7 +3,9 @@
         <div class="nav-left" id="navbarTogglerDemo02">
             <img class="logo" src="../temp/css/assets/images/user_img/logo.png" alt="">
             <ul class="navlogo">
-                <li><img src="../temp/css/assets/images/user_img/notification.png"></li>
+                <li class="position-relative">
+                    <img src="../temp/css/assets/images/user_img/notification.png">
+                </li>
                 <li><img src="../temp/css/assets/images/user_img/inbox.png"></li>
                 <li><img src="../temp/css/assets/images/user_img/video.png"></li>
             </ul>
@@ -12,15 +14,16 @@
         <div class="nav-right">
             <div class="search-box">
                 <img src="../temp/css/assets/images/user_img/search.png" alt="">
-                <input v-model="searchQuery" type="text" placeholder="Search" data-bs-toggle="dropdown">
+                <input v-model="searchQuery" type="text" placeholder="Nhập tên thành phố" data-bs-toggle="dropdown">
                 <div class="search-bar-list">
                     <ul class="dropdown-list dropdown-menu">
-                        <li v-for="(item) in filteredList" :key="item.id">{{ item.name }}</li>
+                        <li v-for="(item) in filteredList" :key="item.code" @click="getLocationCode(item.code)">{{ item.name
+                        }}</li>
                     </ul>
                 </div>
             </div>
-            <div id="profile-image" class="profile-image online" @click="userSettingToggle">
-                <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
+            <div id="profile-image" class="profile-image online" @click="userSettingToggle($event)">
+                <img :src="user_profile.photoURL" alt="">
 
             </div>
         </div>
@@ -42,7 +45,7 @@
                         <li><font-awesome-icon icon="fa-solid fa-message" />Tin nhắn</li>
                         <li><font-awesome-icon icon="fa-solid fa-tv" />Xem video</li>
                         <li>
-                            <RouterLink to="/latest">Latest News</RouterLink>
+                            <RouterLink to="/list_destination">Latest News</RouterLink>
                         </li>
                         <li>
                             <RouterLink to="/location">Location</RouterLink>
@@ -57,62 +60,70 @@
         <div id="user-settings" class="user-settings" :class="'user-setting-showup-toggle'" v-show="isShowUserSettings">
             <div class="profile-darkButton">
                 <div class="user-profile">
-                    <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
+                    <img :src="user_profile.photoURL" alt="">
                     <div>
-                        <p> Khanh Nguyen</p>
-                        <RouterLink :to="{ name: 'UserProfile', params: { id: this.test_object.id } }">See your profile
-                        </RouterLink>
+                        <p> {{ user_profile.displayName }}</p>
+                        <!-- <RouterLink :to="{ name: 'UserProfile', params: { id: user_profile.uid } }">Xem thông tin cá nhân
+                        </RouterLink> -->
+                        <!-- <a @click="() => this.$router.push({ path: `/profile`, query: { id: user_profile.uid }, props: true })">Xem thông tin cá nhân</a> -->
+                        <!-- <a
+                            @click="() => this.$router.push({ path: `/profile/${user_profile.uid}`, params: { id: user_profile.uid } })">Xem
+                            thông tin cá nhân</a> -->
+                            <a @click="() => this.$router.push({ path: `/profile/${user_profile.uid}`})">Xem thông tin cá nhân</a>
                     </div>
                 </div>
-                <div id="dark-button" onclick="darkModeON()">
-                    <span></span>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" ref="dark-mode" id="toggle-dark-mode" @click="isChecked">
+                    <label class="form-check-label" for="flexSwitchCheckDefault"></label>
                 </div>
+                
             </div>
             <hr>
             <div class="user-profile">
                 <img src="../temp/css/assets/images/user_img/feedback.png" alt="">
                 <div>
-                    <p> Give Feedback</p>
-                    <a href="#">Help us to improve</a>
+                    <p> Phản hồi của bạn</p>
+                    <a href="#">Giúp chúng tôi cải thiện nhiều hơn</a>
                 </div>
             </div>
             <hr>
             <div class="settings-links">
                 <img src="../temp/css/assets/images/user_img/setting.png" alt="" class="settings-icon">
-                <a href="#">Settings & Privary <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
+                <a href="#">Chính sách & Cài đặt <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
             </div>
 
             <div class="settings-links">
                 <img src="../temp/css/assets/images/user_img/help.png" alt="" class="settings-icon">
-                <a href="#">Help & Support <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
+                <a href="#">Hỗ trợ <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
             </div>
 
             <div class="settings-links">
                 <img src="../temp/css/assets/images/user_img/Display.png" alt="" class="settings-icon">
-                <a href="#">Display & Accessibility <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
+                <a href="#">Hiển thị & trợ năng <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
             </div>
 
             <div class="settings-links" @click="logOut">
                 <img src="../temp/css/assets/images/user_img/logout.png" alt="" class="settings-icon">
-                <a>Logout <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
+                <a>Đăng xuất <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
             </div>
 
         </div>
     </nav>
     <div class="search-bar-list">
-        <input v-model="searchQuery" type="text" placeholder="Search" class="search--mobile dropdown-toggle"
+        <input v-model="searchQuery" type="text" placeholder="Nhập tên thành phố" class="search--mobile dropdown-toggle"
             v-if="this.isShowMobileSearch" data-bs-toggle="dropdown">
         <ul class="dropdown-list dropdown-menu">
-            <li v-for="(item) in filteredList" :key="item.id">{{ item.name }}</li>
+            <li v-for="(item) in filteredList" :key="item.code" @click="getLocationCode(item.code)">{{ item.name }}</li>
         </ul>
     </div>
+
     <!-- content-area------------ -->
 
     <div class="container-fluid">
         <div class="row">
             <div class="left-sidebar col-sm-4 col-md-3 col-lg-3">
                 <div class="important-links">
-                    <RouterLink to="#"><img src="../temp/css/assets/images/user_img/news.png" alt="">
+                    <RouterLink to="/list_destination"><img src="../temp/css/assets/images/user_img/news.png" alt="">
                         Latest News
                     </RouterLink>
                     <RouterLink to="#"><img src="../temp/css/assets/images/user_img/friends.png" alt="">
@@ -136,7 +147,7 @@
 
             <!-- main-content------- -->
 
-            <div class="content-area col-12 col-sm-8 col-md-9 col-lg-6">
+            <div class="content-area col-12 col-sm-8 col-md-9 col-lg-6" @scroll="onScroll($event)">
                 <div class="story-gallery">
                     <!-- <div class="story story1">
                         <img src="../temp/css/assets/images/user_img/upload.png" alt="">
@@ -152,16 +163,25 @@
 
                 <div class="write-post-container">
                     <div class="user-profile">
-                        <img src="../temp/css/assets/images/user_img/profile-pic.png" alt="">
-                        <div>
-                            <p> Alex Carry</p>
-                            <small>Public <i class="fas fa-caret-down"></i></small>
+                        <img :src="user_profile.photoURL" alt="">
+                        <div class="dropdown">
+                            <p> {{user_profile.displayName}}</p>
+                            <small data-bs-toggle="dropdown">
+                                <div v-if="current_policy === 0">Công khai <font-awesome-icon icon="fa-solid fa-caret-down"/></div> 
+                                <div v-if="current_policy === 1">Bạn bè <font-awesome-icon icon="fa-solid fa-caret-down"/></div> 
+                                <div v-if="current_policy === 2">Chỉ mình tôi <font-awesome-icon icon="fa-solid fa-caret-down"/></div> 
+                            </small>
+                            <ul class="dropdown__privacy dropdown-menu p-0">
+                                <li class="dropdown__privacy--item" @click="selectPolicy(0)">Công khai</li>
+                                <li class="dropdown__privacy--item" @click="selectPolicy(1)">Bạn bè</li>
+                                <li class="dropdown__privacy--item" @click="selectPolicy(2)">Chỉ mình tôi</li>
+                            </ul>
                         </div>
                     </div>
 
                     <div class="post-upload-textarea">
-                        <textarea name="" placeholder="What's on your mind, Alex?" id="" cols="30" rows="3"
-                            data-bs-toggle="modal" data-bs-target="#staticBackdrop"></textarea>
+                        <textarea name="" :placeholder="`Bạn đang nghĩ gì vậy, ${user_profile.displayName}?`" id="" cols="30" rows="3"
+                            data-bs-toggle="modal" data-bs-target="#staticBackdrop" disabled></textarea>
                         <div class="add-post-links">
                             <a href="#"><img src="../temp/css/assets/images/user_img/live-video.png" alt="">Live Video</a>
                             <a href="#"><img src="../temp/css/assets/images/user_img/photo.png" alt="">Photo/Video</a>
@@ -177,9 +197,8 @@
                 </div>
 
                 <RouterView />
-                <button type="button" class="btn-LoadMore">Load More</button>
+                <button type="button" class="btn-LoadMore" @click="fetchNext">Load More</button>
             </div>
-
             <!-- sidebar------------ -->
             <div class="right-sidebar col-lg-3">
                 <div class="heading-link">
@@ -245,7 +264,7 @@
             </div>
         </div>
     </div>
-
+    <!-- Create Post  -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -256,7 +275,34 @@
                 </div>
                 <div class="modal-body">
                     <textarea class="form-control" placeholder="Bạn đang nghĩ gì?" id="floatingTextarea2"
-                        style="height: 10%"></textarea>
+                        style="height: 10%" v-model="caption" @keyup="setButtonStatus"></textarea>
+                    <div class="container-fluid list__locations">
+                        <div class="row flex-wrap">
+                            <div class="list__cities col-12 col-md-6">
+                                <input v-model="searchQuery" type="text" name="" id="city-modal__input" 
+                                placeholder="Tên thành phố" @click="showCityList($event)">
+                                <div class="dropdown__icon"><font-awesome-icon icon="fa-solid fa-caret-down" /></div>
+                                <div class="dropdown__cities" v-if="isShowCityList">
+                                    <div class="dropdown__item" 
+                                        v-for="(item) in filteredList" :key="item.code"
+                                        @click="getCityCode(item.code, item.name)">
+                                        {{item.name}}
+                                    </div>
+                                </div>
+                            </div>    
+                            <div class="list__places col-12 col-md-6">
+                                <input v-model="v_place" type="text" name="" id="place-modal__input" placeholder="Tên điểm du lịch" @click="showPlaceList($event)">
+                                <div class="dropdown__icon"><font-awesome-icon icon="fa-solid fa-caret-down" /></div>
+                                <div class="dropdown__places" v-if="isShowPlaceList">
+                                    <div class="dropdown__item" 
+                                        v-for="place in list_places" :key="place.id"
+                                        @click="() => v_place = place.name">
+                                        {{place.name}}
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+                    </div>    
                     <div class="border border-secondary-subtle modal__footer">
                         <div class="input__image">
                             <input ref="file-input" id="file-input" type="file" name="filefield" multiple="multiple"
@@ -278,7 +324,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="clearInput">Xóa ảnh</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary" @click="createPost">Đăng bài ngay</button>
+                    <button type="button" class="btn btn-primary" @click="createPost" :disabled="status_btn">Đăng bài ngay</button>
                 </div>
             </div>
         </div>
@@ -291,37 +337,128 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 import '@fortawesome/vue-fontawesome';
 import axios from 'axios';
 import { RouterView, RouterLink } from 'vue-router';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { collection, doc, setDoc, addDoc, getDoc, getDocs } from "firebase/firestore";
-import { db } from '../firebase/index';
+import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { doc, getDoc, getDocs, collection, Timestamp, setDoc, query, where } from "firebase/firestore";
+import { db, auth } from '../firebase/index';
+import { onAuthStateChanged } from "firebase/auth";
+import store from '../store/store';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
     name: 'UserPage',
     data() {
         return {
+            isScrolled: false,
             isShowMobileSearch: false,
             isShowMobileSubNav: false,
             isShowUserSettings: false,
-            selectedItem: '',
-            test_object: {
-                id: 1,
-            },
+            isShowCityList: false,
+            isShowPlaceList: false,
             routerlink: [
                 { id: 1, name: 'latest', text: 'Mới nhất' },
-                { id: 2, name: 'location', text: 'Địa điểm' },
+                { id: 2, name: 'list_destination', text: 'Địa danh' },
                 { id: 3, name: 'your-post', text: 'Bài đăng của bạn' },
             ],
-            token: '',
             imagesObj: [],
             list_image: [],
             num_of_files: 0,
-            searchedList: [],
             searchQuery: '',
             listData: [],
             image_download_url: [],
+            user_profile: {},
+            caption: '',
+            status_btn: true,
+            cityCode: 1,
+            current_policy: 0,
+            list_places: [],
+            v_place: ''
         }
     },
     methods: {
+        fetchNext () {
+            try {
+                store.dispatch('setFetchFlag', true);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        onScroll (event) {
+            try {
+                // const { scrollTop, clientHeight, scrollHeight } = event.target;
+                // if (Math.ceil(scrollTop + clientHeight) >= scrollHeight && !this.isScrolled) {
+                //     console.log('we are now in page bottom');
+                //     store.dispatch('setFetchFlag', true);
+                //     this.isScrolled = true;
+                // }
+                // else {
+                //     store.dispatch('setFetchFlag', false);
+                //     this.isScrolled = false;
+                // }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        isChecked() {
+            const res = this.$refs['dark-mode'].checked;
+            const target = document.body;
+            (res) ? target.classList.add('bg-dark') : target.classList.remove('bg-dark');
+        },
+        notify(message, type, duration) {
+            toast(message, {
+                autoClose: duration,
+                type: type
+            });
+        },
+        selectPolicy(policy) {
+            this.current_policy = policy;
+        },
+        getCityCode(code, name) {
+            this.cityCode = code;
+            this.searchQuery = name;
+            this.getPlaceList(code);
+        },
+        async getPlaceList (code) {
+            const collectionRef = collection(db, "destinations");
+            const whereConditionalString = where("cityCode", "==", code);
+            const q = query(collectionRef, whereConditionalString);
+            const querySnapshot = await getDocs(q);
+            this.list_places.length = 0;
+            querySnapshot.forEach((doc) => {
+                this.list_places.push({ id: doc.id, ...doc.data() });
+            });
+        },
+        showCityList(event){
+            event.stopPropagation();
+            this.isShowPlaceList = false;
+            return this.isShowCityList = true;
+        },
+        showPlaceList(event) {
+            event.stopPropagation();
+            this.isShowCityList = false;
+            return this.isShowPlaceList = true;
+        },
+        setButtonStatus() {
+            // Disabled: true là ẩn, false là hiện nút
+            (this.caption || this.num_of_files > 0) ? this.status_btn = false : this.status_btn = true
+        },
+        getProfile() {
+            let uid;
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    uid = user.uid;
+                    const docRef = doc(db, "users", uid);
+                    const docSnap = await getDoc(docRef);
+        
+                    if (docSnap.exists()) {
+                        this.user_profile = {...docSnap.data(), uid: uid};
+                    }
+                }
+            });
+        },
+        getLocationCode(code) {
+            this.$router.push({ name: 'location', params: { code: code } })
+        },
         /**
          * Ẩn / hiện input search trên di động
          * nnkhanh 22/02/23
@@ -343,13 +480,13 @@ export default {
          * Ẩn / hiện user-settings
          * nnkhanh 23/02/23
          */
-        userSettingToggle() {
+        userSettingToggle(event) {
+            event.stopPropagation();
             return this.isShowUserSettings = !this.isShowUserSettings;
         },
 
         logOut() {
-            localStorage.removeItem('token');
-            this.$router.push('/');
+            store.dispatch('logOut');
         },
 
         addImages() {
@@ -371,8 +508,8 @@ export default {
                 }
                 reader.readAsDataURL(i);
                 this.num_of_files++;
-
             }
+            this.setButtonStatus();
         },
 
         clearInput() {
@@ -381,73 +518,73 @@ export default {
             this.num_of_files = 0;
             this.list_image = [];
             this.imagesObj = [];
+            this.setButtonStatus();
         },
 
         /**Tạo bài đăng mới */
         async createPost() {
             try {
-                const storage = getStorage();
-                let fileInput = this.$refs['file-input'];
-
-                for (let i of fileInput.files) {
-                    const storageRef = ref(storage, `images/${i.name}`);
-                    const uploadTask = uploadBytesResumable(storageRef, i);
-                    uploadTask.on('state_changed',
-                        (snapshot) => {
-                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            console.log(`${i.name} is ${progress}% done`);
-
-                        },
-                        (error) => {
-                            switch (error.code) {
-                                case 'storage/unauthorized':
-                                    break;
-                                case 'storage/canceled':
-                                    break;
-                                case 'storage/unknown':
-                                    break;
-                            }
-                        },
-                        async () => {
-                            // Upload completed successfully, now we can get the download URL
-                            await getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                                this.image_download_url.push({ path: downloadURL });
-                                setDoc(doc(db, 'KhanhNguyen', 'images'), { path: downloadURL })
-                                // console.log(`File is available at: ${downloadURL}`);
-                            });
-                        }
-                    );
-
-                    // const colRef = collection(db, 'images');
-                    // const docRef = await addDoc(colRef, this.image_download_url[0]);
-
-                }
+                const generated_id = doc(collection(db, "news"));
+                const id = await this.getCurrentUserId();
+                const url = await this.getImagesURL(id, generated_id.id);
+                const post = await this.uploadPost(id, url, generated_id);
+                console.log('Đăng post thành công, vui lòng đợi quản trị viên duyệt bài của bạn!!');
+                this.notify('Đăng bài viết thành công, vui lòng đợi quản trị viên duyệt bài của bạn!!', 'success', 2000);
             } catch (error) {
                 console.log(error);
             }
         },
-
-        async uploadTaskPromise(path, file) {
-            return new Promise(function (resolve, reject) {
-                const uploadTask = uploadBytesResumable(path, file);
-                uploadTask.on('state_changed',
-                    (snapshot) => { // Progress
-                        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        console.log(`${file.name} is ${progress}% done`);
-                    },
-                    (err) => { // Error
-                        console.log('error', err);
-                        reject();
-                    },
-                    () => { // Complete
-                        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                            resolve(downloadURL);
-                        });
-                    }
-                )
+        uploadPost(id, url, generated_ref) {
+            return new Promise((resolve, reject) => {
+                setDoc(generated_ref, {
+                    user_id: id,
+                    comments: [],
+                    content: this.caption,
+                    images: url,
+                    isApproved: false,
+                    location_code: this.cityCode,
+                    reactions: [],
+                    created_date: Timestamp.fromDate(new Date()),
+                })
+                    .then(() => resolve())
+                    .catch((error) => {
+                        console.log(error);
+                        reject(error);
+                    })
             })
         },
+        async getCurrentUserId() {
+            await store.dispatch('setUser');
+            return await store.getters.getUser.uid;
+        },
+        async getImagesURL(folder_name, post_id) {
+            
+            let fileInput = this.$refs['file-input'];
+            const storage = getStorage();
+            if (!fileInput.files.length) return [];
+            const promises = []
+            const data = []
+            for (const item of fileInput.files) {
+                const storageRef = ref(storage, `${folder_name}/${post_id}/${item.name}`)
+                promises.push(uploadBytes(storageRef, item))
+            }
+            const uploadResults = await Promise.all(promises)
+            const downloadURLs = []
 
+            for (const item of uploadResults) {
+                // data.push({ fullPath: item.metadata.fullPath, downloadURL: '', name: '' })
+                downloadURLs.push(getDownloadURL(item.ref))
+            }
+
+            const downloadURLsResult = await Promise.all(downloadURLs)
+
+            for (var i = 0; i < downloadURLsResult.length; i++) {
+                // data[i].downloadURL = downloadURLsResult[i]
+                data[i] = downloadURLsResult[i]
+                // data[i].name = files.files[i].name
+            }
+            return data
+        },
         async callApiProvinces() {
             await axios.get('https://provinces.open-api.vn/api/p/')
                 .then(res => {
@@ -457,22 +594,9 @@ export default {
                     console.log(e);
                 })
         },
-        
     },
     created() {
-        // this.token = localStorage.getItem('token')
-        // if (!this.token) {
-        //     this.$router.push('/');
-        // }
-        // else {
-        //     this.$router.push('/latest');
-        // }
-        // setTimeout(() => {
-        //     localStorage.removeItem('token');
-        //     this.$router.push('/');
-        // }, 5 * 1000);
-        // let parseData = JSON.parse(localStorage.getItem('token'));
-        // let exp = Number(parseData.expiresIn) - new Date().getTime();
+        this.getProfile();
     },
 
     computed: {
@@ -490,12 +614,82 @@ export default {
     },
     mounted() {
         this.callApiProvinces();
+        document.querySelector('#app').addEventListener('click', () => {
+            this.isShowCityList = false;
+            this.isShowPlaceList = false;
+            this.isShowUserSettings = false;
+        });
     },
 }
 </script>
 <style scoped>
 @import url('../temp/css/user.css');
 
+.message-item {
+    padding: 0 1em;
+}
+.unread-message {
+    min-width: 200px;
+    background-color: #fff;
+    z-index: 10;
+    box-shadow: 1px 1px 7px grey;
+    left: 1.5em;
+    top: 2.5em;
+}
+.dropdown small {
+    cursor: pointer;
+}
+.write-post-user-info {
+    position: relative;
+}
+.dropdown__privacy {
+    overflow: hidden;
+}
+
+.dropdown__privacy--item{
+    padding: 0 0.5em;
+}
+.list__locations {
+    padding: 0;
+}
+.list__cities, .list__places {
+    margin-top: 0.5em;
+    position: relative;
+}
+.dropdown__icon {
+    position: absolute;
+    top: 1.25em;
+    right: 1.125em;
+}
+.dropdown__cities, .dropdown__places {
+    margin: 0.5em 0;
+    box-shadow: 0px 2px 15px grey;
+    height: 10.5em;
+    border-radius: 0.25em;
+    overflow-y: overlay;
+}
+.dropdown__item {
+    padding: 1em;
+    white-space: nowrap;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-overflow: ellipsis;
+}
+
+.dropdown__item:hover, .dropdown__privacy--item:hover, .message-item:hover {
+    background-color: #1876f2;
+    cursor: pointer;
+    color: #fff;
+}
+#city-modal__input, #place-modal__input {
+    width: 100%;
+    padding: 1em;
+    border-radius: 0.25em;
+    outline-color: #1876f2;
+    border: 1px solid #ccc;
+}
+
+/** */
 .content-area {
     margin-top: 0.5em;
 }
@@ -560,6 +754,12 @@ div.card:not(:first-child) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.dropdown-list li:hover {
+    background-color: #d5d5d5;
+    box-shadow: 0px 2px 15px grey;
+    cursor: pointer;
 }
 
 /* width */

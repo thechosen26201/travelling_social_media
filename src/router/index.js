@@ -36,6 +36,12 @@ const router = createRouter({
           name: 'list_destination',
           component: () => import('../views/ListDestinationsView.vue')
         },
+        {
+          path: '/destinations/:cityCode',
+          name: 'destinations',
+          component: () => import('../views/Destinations.vue'),
+          props: true,
+        },
       ]
     },
     {

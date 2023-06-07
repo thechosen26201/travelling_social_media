@@ -2,13 +2,13 @@
     <nav class="navbar">
         <div class="nav-left" id="navbarTogglerDemo02">
             <img class="logo" src="../temp/css/assets/images/user_img/logo.png" alt="">
-            <ul class="navlogo">
+            <!-- <ul class="navlogo">
                 <li class="position-relative">
                     <img src="../temp/css/assets/images/user_img/notification.png">
                 </li>
                 <li><img src="../temp/css/assets/images/user_img/inbox.png"></li>
                 <li><img src="../temp/css/assets/images/user_img/video.png"></li>
-            </ul>
+            </ul> -->
         </div>
 
         <div class="nav-right">
@@ -17,8 +17,9 @@
                 <input v-model="searchQuery" type="text" placeholder="Nhập tên thành phố" data-bs-toggle="dropdown">
                 <div class="search-bar-list">
                     <ul class="dropdown-list dropdown-menu">
-                        <li v-for="(item) in filteredList" :key="item.code" @click="getLocationCode(item.code)">{{ item.name
-                        }}</li>
+                        <li v-for="(item) in filteredList" :key="item.code" @click="getLocationCode(item.code)">
+                            {{ item.name }}
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -41,9 +42,9 @@
                         Xem thông tin cá nhân
                     </div>
                     <ul class="navlogo--mobile">
-                        <li><font-awesome-icon icon="fa-solid fa-bell" />Thông báo</li>
+                        <!-- <li><font-awesome-icon icon="fa-solid fa-bell" />Thông báo</li>
                         <li><font-awesome-icon icon="fa-solid fa-message" />Tin nhắn</li>
-                        <li><font-awesome-icon icon="fa-solid fa-tv" />Xem video</li>
+                        <li><font-awesome-icon icon="fa-solid fa-tv" />Xem video</li> -->
                         <li>
                             <RouterLink to="/list_destination">Latest News</RouterLink>
                         </li>
@@ -97,6 +98,7 @@
                 <a href="#">Hỗ trợ <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
             </div>
 
+            
             <div class="settings-links">
                 <img src="../temp/css/assets/images/user_img/Display.png" alt="" class="settings-icon">
                 <a href="#">Hiển thị & trợ năng <img src="../temp/css/assets/images/user_img/arrow.png" alt=""></a>
@@ -124,24 +126,23 @@
             <div class="left-sidebar col-sm-4 col-md-3 col-lg-3">
                 <div class="important-links">
                     <RouterLink to="/list_destination"><img src="../temp/css/assets/images/user_img/news.png" alt="">
-                        Latest News
+                        Mới nhất
                     </RouterLink>
                     <RouterLink to="#"><img src="../temp/css/assets/images/user_img/friends.png" alt="">
-                        Friends
+                        Bạn bè
                     </RouterLink>
-                    <a href="#"><img src="../temp/css/assets/images/user_img/group.png" alt="">Groups</a>
-                    <a href="#"><img src="../temp/css/assets/images/user_img/marketplace.png" alt="">marketplace</a>
-                    <a href="#"><img src="../temp/css/assets/images/user_img/watch.png" alt="">Watch</a>
-                    <a href="#">See More</a>
+                    <a href="#"><img src="../temp/css/assets/images/user_img/group.png" alt="">Nhóm</a>
+                    <a href="#"><img src="../temp/css/assets/images/user_img/marketplace.png" alt="">Mua sắm</a>
+                    <a href="#"><img src="../temp/css/assets/images/user_img/watch.png" alt="">Xem video</a>
+                    <a href="#">Xem thêm</a>
                 </div>
 
                 <div class="shortcut-links">
-                    <p>Your Shortcuts</p>
-                    <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-1.png" alt="">Web Developers</a>
-                    <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-2.png" alt="">Web Design Course</a>
-                    <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-3.png" alt="">Full Stack
-                        Development</a>
-                    <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-4.png" alt="">Website Experts</a>
+                    <p>Lối tắt</p>
+                    <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-1.png" alt="">Địa điểm mới nhất</a>
+                    <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-2.png" alt="">Quan tâm nhiều nhất</a>
+                    <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-3.png" alt="">Nhóm của bạn</a>
+                    <a href="#"> <img src="../temp/css/assets/images/user_img/shortcut-4.png" alt="">Hỗ trợ</a>
                 </div>
             </div>
 
@@ -197,13 +198,13 @@
                 </div>
 
                 <RouterView />
-                <button type="button" class="btn-LoadMore" @click="fetchNext">Load More</button>
+                <!-- <button type="button" class="btn-LoadMore" @click="fetchNext">Load More</button> -->
             </div>
             <!-- sidebar------------ -->
             <div class="right-sidebar col-lg-3">
                 <div class="heading-link">
-                    <h4>Events</h4>
-                    <a href="">See All</a>
+                    <h4>Sự kiện</h4>
+                    <a href="">Xem tất cả</a>
                 </div>
 
                 <div class="events">
@@ -212,34 +213,34 @@
                         <span>august</span>
                     </div>
                     <div class="right-event">
-                        <h4>Social Media</h4>
+                        <h4>Mạng xã hội</h4>
                         <p> <i class="fas fa-map-marker-alt"></i> wisdom em Park</p>
-                        <a href="#">More Info</a>
+                        <a href="#">Xem thêm</a>
                     </div>
                 </div>
-                <div class="events">
+                <!-- <div class="events">
                     <div class="left-event">
                         <h4>18</h4>
                         <span>January</span>
                     </div>
                     <div class="right-event">
-                        <h4>Mobile Marketing</h4>
+                        <h4>Mua bán online</h4>
                         <p><i class="fas fa-map-marker-alt"></i> wisdom em Park</p>
-                        <a href="#">More Info</a>
+                        <a href="#">Xem thêm</a>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="heading-link">
-                    <h4>Advertisement</h4>
-                    <a href="">Close</a>
+                    <h4>Quảng cáo</h4>
+                    <a href="">Đóng</a>
                 </div>
                 <div class="advertisement">
                     <img src="../temp/css/assets/images/user_img/advertisement.png" class="advertisement-image" alt="">
                 </div>
 
                 <div class="heading-link">
-                    <h4>Conversation</h4>
-                    <a href="">Hide Chat</a>
+                    <h4>Trò chuyện</h4>
+                    <a href="">Ẩn trò chuyện</a>
                 </div>
 
                 <div class="online-list">
@@ -457,7 +458,8 @@ export default {
             });
         },
         getLocationCode(code) {
-            this.$router.push({ name: 'location', params: { code: code } })
+            // this.$router.push({ name: 'location', params: { code: code } })
+            this.$router.push({ name: 'destinations', params: { cityCode: code } });
         },
         /**
          * Ẩn / hiện input search trên di động

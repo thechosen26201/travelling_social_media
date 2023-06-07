@@ -10,7 +10,7 @@
                     {{ item['text'] }}
                 </div>
                 <div class="response-features d-flex">
-                    <!-- <p>Thích</p> -->
+                    <p>Thích</p>
                     <p class="ms-2" @click="toggleCommentBlock(item, itemArray.includes(item))">Phản hồi</p>
                     <textarea class="form-control edit-text" id="exampleFormControlTextarea1"
                         v-if="editCommentArray.includes(item) ? true : false" 
@@ -36,7 +36,7 @@
                                 {{ reply['text'] }}
                             </div>
                             <div class="response-features d-flex">
-                                <!-- <p>Thích</p> -->
+                                <p>Thích</p>
                                 <p class="ms-2" @click="toggleCommentBlock(reply, itemArray.includes(reply))">Phản hồi</p>
                                 <textarea class="form-control edit-text" id="exampleFormControlTextarea1"
                                     v-if="editCommentArray.includes(reply) ? true : false" @keyup.lazy.enter="editComment(reply)"
@@ -152,7 +152,6 @@ export default {
             return c;
         }
         watch(list.value, async () => {
-            console.log(list.value);
             comment_replies.value.length = 0;
             top_level_comment.value.length = 0;
             list.value.filter(item => {
@@ -235,7 +234,7 @@ textarea {
 }
 
 .user__comment {
-    /* position: relative; */
+    position: relative;
 }
 
 .edit__button:hover,

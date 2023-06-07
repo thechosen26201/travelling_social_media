@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-// import UserPage from './pages/UserPage.vue';
+
 </script>
 
 <template>

@@ -262,6 +262,7 @@ img.advertisement-image {
   position: sticky;
   top: -1px;
   z-index: 10;
+  background-color: var(--bg-color);
   padding: 0 0.5em;
   min-height: 1.75em;
 }
@@ -421,7 +422,7 @@ img.advertisement-image {
   color: var(--nav-color);
 }
 
-.activity-icons div {
+.activity-icons div:not([class^=icon-container]) {
   display: inline-flex;
   align-items: center;
   margin-right: 30px;

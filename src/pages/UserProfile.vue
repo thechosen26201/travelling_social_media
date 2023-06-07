@@ -1,5 +1,5 @@
 <template>
-    <section style="background-color: #eee;">
+    <section style="background-color: #eee; height: 100vh;">
         <div class="container py-5">
             <div class="row">
                 <div class="col">
@@ -30,15 +30,15 @@
                             <div class="edit_button" @click="openEditInput(2, $event)">
                                 <font-awesome-icon icon="fa-solid fa-pen" />
                             </div> 
-                            <p class="text-muted mb-1">Full Stack Developer</p>
-                            <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
-                            <div class="d-flex justify-content-center mb-2">
+                            <!-- <p class="text-muted mb-1">Full Stack Developer</p>
+                            <p class="text-muted mb-4">Bay Area, San Francisco, CA</p> -->
+                            <!-- <div class="d-flex justify-content-center mb-2">
                                 <button type="button" class="btn btn-primary">Follow</button>
                                 <button type="button" class="btn btn-outline-primary ms-1">Message</button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
-                    <div class="card mb-4 mb-lg-0">
+                    <!-- <div class="card mb-4 mb-lg-0">
                         <div class="card-body p-0">
                             <ul class="list-group list-group-flush rounded-3">
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
@@ -63,7 +63,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-lg-8">
                     <div class="card mb-4">
@@ -132,11 +132,12 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <button class="btn btn-primary" type="button" @click="update_profile">Cập nhật thông tin</button>
+                                    <!-- <button class="btn btn-outline-danger ms-1" type="button" @click="delete_account">Xóa tài khoản</button> -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-6">
                             <div class="card mb-4 mb-md-0">
                                 <div class="card-body">
@@ -205,7 +206,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -399,7 +400,7 @@ onMounted(async () => {
     try {
         const docRef = doc(db, "users", uid.value);
         const docSnap = await getDoc(docRef);
-        
+
         if (docSnap.exists()) {
             // user_profile.value = docSnap.data();
             v_email.value = docSnap.data().email;
@@ -431,7 +432,8 @@ const update_profile = async () => {
             lastName: v_lname.value,
             // email: v_email.value,
             phoneNumber: v_phone.value,
-            displayName: displayName.value
+            displayName: displayName.value,
+            emailVerified: auth.currentUser.emailVerified,
         });
         await updateProfile(auth.currentUser, {
             displayName: displayName.value

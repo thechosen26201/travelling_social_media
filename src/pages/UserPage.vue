@@ -238,7 +238,7 @@
                     <img src="../temp/css/assets/images/user_img/advertisement.png" class="advertisement-image" alt="">
                 </div>
 
-                <div class="heading-link">
+                <!-- <div class="heading-link">
                     <h4>Trò chuyện</h4>
                     <a href="">Ẩn trò chuyện</a>
                 </div>
@@ -261,7 +261,7 @@
                         <img src="../temp/css/assets/images/user_img/member-3.png" alt="">
                     </div>
                     <p>Samona Rose</p>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -358,7 +358,7 @@ export default {
             isShowPlaceList: false,
             routerlink: [
                 { id: 1, name: 'latest', text: 'Mới nhất' },
-                { id: 2, name: 'list_destination', text: 'Địa danh' },
+                { id: 2, name: 'list_destination', text: 'Địa điểm' },
                 { id: 3, name: 'your-post', text: 'Bài đăng của bạn' },
             ],
             imagesObj: [],

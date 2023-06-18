@@ -196,7 +196,7 @@ export default {
                     // this.response_data = response.user.accessToken
                     // console.log(response.user.accessToken);
                     this.notify('Đăng nhập thành công','success', 1500);
-                    this.pushToLatestView();
+                    this.pushToNextView();
                     return;
                 }
                 else {
@@ -213,9 +213,9 @@ export default {
          * đẩy về trang home
          * 13/03/23
          */
-        pushToLatestView() {
+        pushToNextView() {
             // localStorage.setItem('token', JSON.stringify(this.response_data));
-            this.$router.push('/latest');
+            this.$router.push('/list_destination');
         },
 
         validateInput(email, password) {

@@ -18,9 +18,10 @@
     }
 </style>
 <script>
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, watch, watchEffect} from 'vue';
 import useFormValidation from '../js/useFormValidation';
 import resource from '../js/resource';
+import regex from '../js/regex';
 
 export default {
     name: 'InputBase',
@@ -30,6 +31,18 @@ export default {
         let type = props.type,
             placeholder = props.placeholder,
             input = ref(""), reference = props.reference;
+        const {regexAlphanumeric} = regex();
+        watchEffect(() => {
+            try {
+                if (input.value) {
+                    if(!regexAlphanumeric.test(input.value)) {
+                        input.value = input.value.replace(/[_^-]/g, '');
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        })
         const {EMAIL, PASSWORD, FIRST_NAME, LAST_NAME} = resource();
         const { validateFirstNameField, validateEmailField, validatePasswordField, errors } = useFormValidation();
 
